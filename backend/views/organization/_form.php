@@ -13,12 +13,19 @@ $types = [];
 foreach($model->organizationTypes as $ot){
 	$types[] = $ot->type;
 }
+$urlManager = Yii::$app->urlManager;
 ?>
 <div class="span12">
 	<div class="widget ">
 		<div class="widget-header">
-			<i class="icon-user"></i>
+			<i class="icon-certificate"></i>
 	      	<h3><?= $this->title;?></h3>
+			<?php if(!$model->isNewRecord){?>
+				<div class="pull-right header-btns">
+					<a href="<?= $urlManager->createAbsoluteUrl(['organization-member/index', 'id' => $model->id]);?>" class="btn btn-info">Members</a>
+					<a href="<?= $urlManager->createAbsoluteUrl(['organization-team/index', 'id' => $model->id]);?>" class="btn btn-warning">Teams</a>
+				</div>
+			<?php }?>
 	  	</div> <!-- /widget-header -->
 		<div class="widget-content">
 			<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>

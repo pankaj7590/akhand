@@ -76,3 +76,6 @@
 .grid-view tbody tr{
 	cursor:pointer;
 }
+.header-btns {
+    margin-right: 6px;
+}

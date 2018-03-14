@@ -15,7 +15,7 @@ $urlManager = Yii::$app->urlManager;
 <div class="span12">
 	<div class="widget">
 		<div class="widget-header">
-			<i class="icon-user"></i>
+			<i class="icon-certificate"></i>
 	      	<h3><?= Html::encode($this->title) ?></h3>
 	  	</div>
 		<div class="widget-content">

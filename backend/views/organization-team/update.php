@@ -5,8 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\OrganizationTeam */
 
-$this->title = 'Update Organization Team: {nameAttribute}';
-$this->params['breadcrumbs'][] = ['label' => 'Organization Teams', 'url' => ['index']];
+$this->title = 'Update Team: {nameAttribute}';
+$this->params['breadcrumbs'][] = ['label' => 'Organizations', 'url' => ['organization/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->organization->name, 'url' => ['organization/view', 'id' => $model->organization_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Teams', 'url' => ['index', 'id' => $model->organization_id]];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

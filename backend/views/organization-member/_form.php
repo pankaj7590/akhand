@@ -7,29 +7,22 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\OrganizationMember */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="organization-member-form">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'organization_id')->textInput() ?>
-
-    <?= $form->field($model, 'member_id')->textInput() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+<div class="span12">
+	<div class="widget">
+		<div class="widget-header">
+			<i class="icon-certificate"></i>
+			<i class="icon-plus-sign"></i>
+	      	<h3><?= Html::encode($this->title) ?></h3>
+	  	</div>
+		<div class="widget-content">
+			<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
+				<fieldset>
+					<?= $form->field($model, 'member_id', ['template' => '{label}<div class="controls">{input}</div>{error}'])->dropdownList($members, ['multiple' => true]) ?>
+					<div class="form-actions">
+						<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+					</div>
+				</fieldset>
+			<?php ActiveForm::end(); ?>
+		</div> <!-- /widget-content -->
+	</div> <!-- /widget -->
 </div>

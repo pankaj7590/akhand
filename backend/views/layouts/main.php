@@ -170,6 +170,14 @@ $baseUrl = $urlManager->baseUrl;
 		<div class="container">
 			<div class="row">
 				<div class="span12">
+					<?= Breadcrumbs::widget([
+						'itemTemplate' => "<li>{link}</li> / ",
+						'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+					]) ?>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12">
 					<?= Alert::widget() ?>
 				</div>
 			</div>

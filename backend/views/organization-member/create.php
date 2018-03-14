@@ -6,16 +6,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\OrganizationMember */
 
-$this->title = 'Create Organization Member';
-$this->params['breadcrumbs'][] = ['label' => 'Organization Members', 'url' => ['index']];
+$this->title = 'Add Members';
+$this->params['breadcrumbs'][] = ['label' => 'Organizations', 'url' => ['organization/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->organization->name, 'url' => ['organization/view', 'id' => $model->organization_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Members', 'url' => ['index', 'id' => $model->organization_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="organization-member-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
+<?= $this->render('_form', [
         'model' => $model,
+		'members' => $members,
     ]) ?>
-
-</div>

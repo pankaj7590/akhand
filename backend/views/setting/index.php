@@ -24,6 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?= GridView::widget([
 					'dataProvider' => $dataProvider,
 					'filterModel' => $searchModel,
+					'rowOptions' => function ($model, $key, $index, $grid) use ($urlManager) {
+						return ['onclick' => 'window.location = "'.$urlManager->createAbsoluteUrl(['setting/update', 'id' => $model->id]).'"'];
+					},
 					'columns' => [
 						['class' => 'yii\grid\SerialColumn'],
 

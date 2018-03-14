@@ -3,6 +3,9 @@
 namespace backend\controllers;
 
 use Yii;
+use common\models\Organization;
+use common\models\Member;
+use common\models\OrganizationSearch;
 use common\models\OrganizationMember;
 use common\models\search\OrganizationMemberSearch;
 use yii\web\Controller;
@@ -33,9 +36,10 @@ class OrganizationMemberController extends Controller
      * Lists all OrganizationMember models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $searchModel = new OrganizationMemberSearch();
+		$searchModel->organization_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -62,16 +66,30 @@ class OrganizationMemberController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
+		$organizationModel = $this->findOrganizationModel($id);
+		
         $model = new OrganizationMember();
+		$model->organization_id = $id;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+		$members = \yii\helpers\ArrayHelper::map(Member::find()->all(), 'id', 'name');
+		
+        if ($model->load(Yii::$app->request->post())) {
+			foreach($model->member_id as $member){
+				$om = new OrganizationMember();
+				$om->organization_id = $id;
+				$om->member_id = $member;
+				if(!$om->save()){
+					Yii::$app->session->setFlash('error', json_encode($om->errors));
+				}
+				return $this->redirect(['index', 'id' => $id]);
+			}
         }
 
         return $this->render('create', [
             'model' => $model,
+            'members' => $members,
         ]);
     }
 
@@ -123,5 +141,21 @@ class OrganizationMemberController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * Finds the Organization model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Organization the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findOrganizationModel($id)
+    {
+        if (($model = Organization::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested organization does not exist.');
     }
 }

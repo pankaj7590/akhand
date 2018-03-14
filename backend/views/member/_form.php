@@ -7,43 +7,32 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Member */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="member-form">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'profile_picture')->textInput() ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'surname')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+<div class="span12">
+	<div class="widget">
+		<div class="widget-header">
+			<i class="icon-plus-sign"></i>
+	      	<h3><?= Html::encode($this->title) ?></h3>
+	  	</div>
+		<div class="widget-content">
+			<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
+				<fieldset>
+					<?php if($model->profilePicture){?>
+						<div class="controls">
+							<img src="<?= \common\components\MediaHelper::getImageUrl($model->profilePicture->file_name)?>"/>
+						</div>
+					<?php }?>
+					<?= $form->field($model, 'profilePictureFile', ['template' => '{label}<div class="controls">{input}</div>{error}'])->fileInput() ?>
+					<?= $form->field($model, 'name', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['maxlength' => true]) ?>
+					<?= $form->field($model, 'surname', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['maxlength' => true]) ?>
+					<?= $form->field($model, 'username', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['maxlength' => true]) ?>
+					<?= $form->field($model, 'password', ['template' => '{label}<div class="controls">{input}</div>{error}'])->passwordInput() ?>
+					<?= $form->field($model, 'email', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['maxlength' => true]) ?>
+					<?= $form->field($model, 'phone', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['maxlength' => true]) ?>
+					<div class="form-actions">
+						<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+					</div>
+				</fieldset>
+			<?php ActiveForm::end(); ?>
+		</div> <!-- /widget-content -->
+	</div> <!-- /widget -->
 </div>

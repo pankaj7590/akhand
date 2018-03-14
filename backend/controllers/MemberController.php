@@ -66,8 +66,14 @@ class MemberController extends Controller
     {
         $model = new Member();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+			$model->setPassword($model->password);
+			$model->generateAuthKey();
+			if($model->save()) {
+				return $this->redirect(['update', 'id' => $model->id]);
+			}else{
+				Yii::$app->session->setFlash('error', json_encode($model->errors));
+			}
         }
 
         return $this->render('create', [
@@ -87,7 +93,7 @@ class MemberController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('update', [
