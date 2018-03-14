@@ -1,0 +1,12 @@
+.leave-comment-wrap .item input[type=password] {
+    padding: 15px 10px;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #fff;
+    font-size: 14px;
+    color: #666;
+    line-height: normal;
+}
+.main-menu span.caret{
+	display:none;
+}

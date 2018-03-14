@@ -1,0 +1,78 @@
+.text-center{
+	text-align:center;
+}
+.subnavbar .container > div > ul > li {
+    float: left;
+    min-width: 90px;
+    height: 60px;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    list-style: none;
+    border-left: 1px solid #d9d9d9;
+}
+.subnavbar .container > div > ul > li.active > a {
+    border-bottom: 3px solid #ff7f74;
+    color: #383838;
+}
+.subnavbar .container > div > ul > li > a {
+    display: block;
+    height: 100%;
+    padding: 0 15px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #b2afaa;
+}
+.subnavbar .container > div > ul > li > a:hover {
+    color: #888;
+    text-decoration: none;
+    background: #fff;
+}
+.subnavbar .container > div > ul > li > a > span {
+    display: block;
+}
+.subnavbar .container > div > ul > li > a > i {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-top: 11px;
+    margin-bottom: -3px;
+    font-size: 20px;
+}
+.subnavbar .container > div > ul {
+    display: inline-block;
+    height: 80px;
+    padding: 0;
+    margin: 0;
+}
+.table-responsive {
+    overflow-x: auto;
+}
+@media (max-width: 767px){
+	.subnavbar .container > div > ul {
+		width: 100%;
+		height: auto;
+		border: none;
+	}
+	.subnavbar .container > div > ul > li {
+		width: 33%;
+		height: 70px;
+		margin-bottom: 0;
+		border: none;
+	}
+	.subnavbar .container > div > ul > li.active > a {
+		font-size: 11px;
+		background: transparent;
+	}
+	.subnavbar .container > div > ul > li > a > i {
+		display: inline-block;
+		margin-bottom: 0;
+		font-size: 20px;
+	}
+}
+.has-error .help-block{
+	color:#db3325;
+}
+.grid-view tbody tr{
+	cursor:pointer;
+}
