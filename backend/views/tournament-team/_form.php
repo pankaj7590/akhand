@@ -6,34 +6,25 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\TournamentTeam */
 /* @var $form yii\widgets\ActiveForm */
+$urlManager = Yii::$app->urlManager;
 ?>
-
-<div class="tournament-team-form">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'tournament_id')->textInput() ?>
-
-    <?= $form->field($model, 'team_id')->textInput() ?>
-
-    <?= $form->field($model, 'entry_fee')->textInput() ?>
-
-    <?= $form->field($model, 'is_paid')->textInput() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+<div class="span12">
+	<div class="widget">
+		<div class="widget-header">
+			<i class="icon-flag-checkered"></i>
+	      	<h3><?= Html::encode($this->title) ?></h3>
+	  	</div>
+		<div class="widget-content">
+			<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']]); ?>
+				<fieldset>
+					<?= $form->field($model, 'team_id', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput() ?>
+					<?= $form->field($model, 'entry_fee', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['value' => $model->tournament->entry_fee]) ?>
+					<?= $form->field($model, 'is_paid', ['template' => '{label}<div class="controls">{input}</div>{error}'])->checkbox() ?>
+					<div class="form-actions">
+						<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+					</div>
+				</fieldset>
+			<?php ActiveForm::end(); ?>
+		</div> <!-- /widget-content -->
+	</div> <!-- /widget -->
 </div>

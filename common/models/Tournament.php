@@ -5,6 +5,8 @@ namespace common\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\web\UploadedFile;
+use common\components\MediaUploader;
 
 /**
  * This is the model class for table "tournament".
@@ -40,6 +42,48 @@ use yii\behaviors\TimestampBehavior;
  */
 class Tournament extends \yii\db\ActiveRecord
 {
+	public $bannerFile, $logoFile;
+	
+	const STATUS_SCHEDULED = 1;
+	const STATUS_ON_GOING = 2;
+	const STATUS_CANCELLED = 3;
+	const STATUS_OVER = 4;
+	
+	public static $statuses = [
+		self::STATUS_SCHEDULED => 'Scheduled',
+		self::STATUS_ON_GOING => 'On Going',
+		self::STATUS_CANCELLED => 'Cancelled',
+		self::STATUS_OVER => 'Over',
+	];
+	
+	const LEVEL_SCHOOL = 1;
+	const LEVEL_INTERSCHOOL = 2;
+	const LEVEL_COLLEGE = 3;
+	const LEVEL_INTERCOLLEGIATE = 4;
+	const LEVEL_UNIVERSITY = 5;
+	const LEVEL_INTERUNIVERSITY = 6;
+	const LEVEL_TALUKA = 7;
+	const LEVEL_DISTRICT = 8;
+	const LEVEL_ZONAL = 9;
+	const LEVEL_STATE = 10;
+	const LEVEL_NATIONAL = 11;
+	const LEVEL_INTERNATIONAL = 12;
+	
+	public static $levels = [
+		self::LEVEL_SCHOOL => 'School',
+		self::LEVEL_INTERSCHOOL => 'Inter-School',
+		self::LEVEL_COLLEGE => 'College',
+		self::LEVEL_INTERCOLLEGIATE => 'Inter-Collegiate',
+		self::LEVEL_UNIVERSITY => 'University',
+		self::LEVEL_INTERUNIVERSITY => 'Inter-University',
+		self::LEVEL_TALUKA => 'Taluka',
+		self::LEVEL_DISTRICT => 'District',
+		self::LEVEL_ZONAL => 'Zonal',
+		self::LEVEL_STATE => 'State',
+		self::LEVEL_NATIONAL => 'National',
+		self::LEVEL_INTERNATIONAL => 'Inter-National',
+	];
+	
     /**
      * @inheritdoc
      */
@@ -63,6 +107,7 @@ class Tournament extends \yii\db\ActiveRecord
             [['logo'], 'exist', 'skipOnError' => true, 'targetClass' => Media::className(), 'targetAttribute' => ['logo' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
+            [['bannerFile', 'logoFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,png'],
         ];
     }
 	
@@ -99,6 +144,8 @@ class Tournament extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'level' => 'Level',
+            'logoFile' => 'Logo',
+            'bannerFile' => 'Banner',
         ];
     }
 
@@ -137,7 +184,7 @@ class Tournament extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBanner0()
+    public function getBannerPicture()
     {
         return $this->hasOne(Media::className(), ['id' => 'banner']);
     }
@@ -145,7 +192,7 @@ class Tournament extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLogo0()
+    public function getLogoPicture()
     {
         return $this->hasOne(Media::className(), ['id' => 'logo']);
     }
@@ -180,5 +227,33 @@ class Tournament extends \yii\db\ActiveRecord
     public function getTournamentTeams()
     {
         return $this->hasMany(TournamentTeam::className(), ['tournament_id' => 'id']);
+    }
+	
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+			$image = UploadedFile::getInstance($this, 'logoFile');
+			if($image){
+				if($image != null && !$image->getHasError()) {
+					if($mediaDetails = MediaUploader::uploadFiles($image)){
+						$this->logo = $mediaDetails['media_id'];
+					}
+				}
+			}
+			$image = UploadedFile::getInstance($this, 'bannerFile');
+			if($image){
+				if($image != null && !$image->getHasError()) {
+					if($mediaDetails = MediaUploader::uploadFiles($image)){
+						$this->banner = $mediaDetails['media_id'];
+					}
+				}
+			}
+            return true;
+        } else {
+            return false;
+        }
     }
 }

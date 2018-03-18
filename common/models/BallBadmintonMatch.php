@@ -53,6 +53,7 @@ class BallBadmintonMatch extends \yii\db\ActiveRecord
             [['winner_team_id'], 'exist', 'skipOnError' => true, 'targetClass' => Team::className(), 'targetAttribute' => ['winner_team_id' => 'id']],
             [['tournament_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tournament::className(), 'targetAttribute' => ['tournament_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
+			['first_team_id', 'compare', 'compareAttribute' => 'second_team_id', 'operator' => '!=', 'skipOnError' => true, 'message' => 'Both teams should be different.'],
         ];
     }
 	

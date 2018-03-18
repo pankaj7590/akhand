@@ -41,7 +41,7 @@ use yii\behaviors\TimestampBehavior;
  * @property TournamentMatch[] $tournamentMatches
  */
 class Match extends \yii\db\ActiveRecord
-{
+{	
     /**
      * @inheritdoc
      */
@@ -64,6 +64,7 @@ class Match extends \yii\db\ActiveRecord
             [['tournament_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tournament::className(), 'targetAttribute' => ['tournament_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
+			['first_team_id', 'compare', 'compareAttribute' => 'second_team_id', 'operator' => '!=', 'skipOnError' => true, 'message' => 'Both teams should be different.'],
         ];
     }
 	

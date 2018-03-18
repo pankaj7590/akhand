@@ -2,46 +2,68 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\components\SportTypes;
+use common\components\MatchStatuses;
+use common\models\Match;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\MatchSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Matches';
+$this->title = 'Cricket Matches';
 $this->params['breadcrumbs'][] = $this->title;
+$urlManager = Yii::$app->urlManager;
 ?>
-<div class="match-index">
+<div class="span12">
+	<div class="widget">
+		<div class="widget-header">
+			<i class="icon-flag"></i>
+	      	<h3><?= Html::encode($this->title) ?></h3>
+	  	</div>
+		<div class="widget-content">
+			<div class="member-index">
+				<div class="table-responsive">
+					<p>
+						<?= Html::a('Add Match', ['create'], ['class' => 'btn btn-success']) ?>
+					</p>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+					<?= GridView::widget([
+						'dataProvider' => $dataProvider,
+						'filterModel' => $searchModel,
+						'rowOptions' => function ($model, $key, $index, $grid) use ($urlManager) {
+							return ['onclick' => 'window.location = "'.$urlManager->createAbsoluteUrl(['match/update', 'id' => $model->id]).'"'];
+						},
+						'columns' => [
+							['class' => 'yii\grid\SerialColumn'],
 
-    <p>
-        <?= Html::a('Create Match', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'tournament_id',
-            'first_team_id',
-            'second_team_id',
-            'winner_team_id',
-            //'first_team_score',
-            //'first_team_wickets',
-            //'second_team_score',
-            //'second_team_wickets',
-            //'status',
-            //'created_by',
-            //'updated_by',
-            //'created_at',
-            //'updated_at',
-            //'type',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+							[
+								'attribute' => 'first_team_id',
+								'value' => function($data){
+									return ($data->firstTeam->name);
+								},
+							],
+							[
+								'attribute' => 'second_team_id',
+								'value' => function($data){
+									return ($data->secondTeam->name);
+								},
+							],
+							[
+								'attribute' => 'winner_team_id',
+								'value' => function($data){
+									return ($data->winnerTeam->name);
+								},
+							],
+							[
+								'attribute' => 'status',
+								'value' => function($data){
+									return (MatchStatuses::$statuses[$data->status]);
+								},
+							],
+						],
+					]); ?>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

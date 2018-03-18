@@ -11,6 +11,7 @@ use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 use yii\web\View;
 use common\models\NewsEvent;
+use common\components\SportTypes;
 
 AppAsset::register($this);
 
@@ -104,6 +105,12 @@ $baseUrl = $urlManager->baseUrl;
 						['label' => 'Manage ', 'url' => ['tournament/index']],
 					]
 				],
+				['label' => '<i class="icon-group"></i><span>Teams</span> ', 'url' => '#',
+					'items' => [
+						['label' => 'Add New ', 'url' => ['team/create']],
+						['label' => 'Manage ', 'url' => ['team/index']],
+					]
+				],
 				['label' => '<i class="icon-folder-open"></i><span>Galleries</span> ', 'url' => '#',
 					'items' => [
 						['label' => 'Add New ', 'url' => ['gallery/create']],
@@ -112,8 +119,12 @@ $baseUrl = $urlManager->baseUrl;
 				],
 				['label' => '<i class="icon-flag"></i><span>Matches</span> ', 'url' => '#',
 					'items' => [
-						['label' => 'Add New ', 'url' => ['match/create']],
-						['label' => 'Manage ', 'url' => ['match/index']],
+						['label' => 'Add New Badminton Match', 'url' => ['badminton-match/create']],
+						['label' => 'Add New Ball Badminton Match', 'url' => ['ball-badminton-match/create']],
+						['label' => 'Add New Cricket Match', 'url' => ['match/create']],
+						['label' => 'Manage Badminton Matches', 'url' => ['badminton-match/index']],
+						['label' => 'Manage Ball Badminton Matches', 'url' => ['ball-badminton-match/index']],
+						['label' => 'Manage Cricket Matches', 'url' => ['match/index']],
 					]
 				],
 				['label' => '<i class="icon-plus-sign"></i><span>Members</span> ', 'url' => '#',
@@ -122,15 +133,12 @@ $baseUrl = $urlManager->baseUrl;
 						['label' => 'Manage ', 'url' => ['member/index']],
 					]
 				],
-				['label' => '<i class="icon-calendar"></i><span>News</span> ', 'url' => '#',
+				['label' => '<i class="icon-calendar"></i><span>News & Events</span> ', 'url' => '#',
 					'items' => [
-						['label' => 'Add New ', 'url' => ['news-event/create', 'type' => NewsEvent::TYPE_NEWS]],
-						['label' => 'Manage ', 'url' => ['news-event/index', 'type' => NewsEvent::TYPE_NEWS]],
-					]],
-				['label' => '<i class="icon-calendar"></i><span>Events</span> ', 'url' => '#',
-					'items' => [
-						['label' => 'Add New ', 'url' => ['news-event/create', 'type' => NewsEvent::TYPE_EVENT]],
-						['label' => 'Manage ', 'url' => ['news-event/index', 'type' => NewsEvent::TYPE_EVENT]],
+						['label' => 'Add New News', 'url' => ['news-event/create', 'type' => NewsEvent::TYPE_NEWS]],
+						['label' => 'Manage News', 'url' => ['news-event/index', 'type' => NewsEvent::TYPE_NEWS]],
+						['label' => 'Add New Event', 'url' => ['news-event/create', 'type' => NewsEvent::TYPE_EVENT]],
+						['label' => 'Manage Event', 'url' => ['news-event/index', 'type' => NewsEvent::TYPE_EVENT]],
 					]],
 				['label' => '<i class="icon-rupee"></i><span>Payments</span> ', 'url' => ['payment/index']],
 				['label' => '<i class="icon-gears"></i><span>Settings</span> ', 'url' => '#',

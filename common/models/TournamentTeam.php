@@ -42,6 +42,7 @@ class TournamentTeam extends \yii\db\ActiveRecord
     {
         return [
             [['tournament_id', 'team_id'], 'required'],
+            [['tournament_id', 'team_id'], 'unique', 'targetAttribute' => ['tournament_id', 'team_id'], 'message' => 'Team is already added in the tournament.'],
             [['tournament_id', 'team_id', 'is_paid', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['entry_fee'], 'number'],
             [['team_id'], 'exist', 'skipOnError' => true, 'targetClass' => Team::className(), 'targetAttribute' => ['team_id' => 'id']],

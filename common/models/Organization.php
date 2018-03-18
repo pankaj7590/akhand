@@ -176,7 +176,7 @@ class Organization extends \yii\db\ActiveRecord
 			if($image){
 				if($image != null && !$image->getHasError()) {
 					if($mediaDetails = MediaUploader::uploadFiles($image)){
-						$this->updateAttributes(['logo' => $mediaDetails['media_id']]);
+						$this->logo = $mediaDetails['media_id'];
 					}
 				}
 			}

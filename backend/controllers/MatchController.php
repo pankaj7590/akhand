@@ -4,11 +4,15 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Match;
+use common\models\Team;
 use common\models\search\MatchSearch;
+use common\components\SportTypes;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 
 /**
  * MatchController implements the CRUD actions for Match model.
@@ -75,13 +79,16 @@ class MatchController extends Controller
     public function actionCreate()
     {
         $model = new Match();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+		
+		$typeTeams = ArrayHelper::map(Team::find()->where(['type' => SportTypes::TYPE_CRICKET])->all(), 'id', 'name');
+		
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'typeTeams' => $typeTeams,
         ]);
     }
 
@@ -96,12 +103,16 @@ class MatchController extends Controller
     {
         $model = $this->findModel($id);
 
+		$matchTeams = [$model->firstTeam->id => $model->firstTeam->name, $model->secondTeam->id => $model->secondTeam->name];
+		$typeTeams = [$model->firstTeam->id => $model->firstTeam->name, $model->secondTeam->id => $model->secondTeam->name];
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'matchTeams' => $matchTeams,
+            'typeTeams' => $typeTeams,
         ]);
     }
 

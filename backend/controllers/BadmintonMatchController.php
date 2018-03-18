@@ -3,6 +3,9 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+use common\components\SportTypes;
+use common\models\Team;
 use common\models\BadmintonMatch;
 use common\models\search\BadmintonMatchSearch;
 use yii\web\Controller;
@@ -76,12 +79,15 @@ class BadmintonMatchController extends Controller
     {
         $model = new BadmintonMatch();
 
+		$typeTeams = ArrayHelper::map(Team::find()->where(['type' => SportTypes::TYPE_BADMINTON])->all(), 'id', 'name');
+		
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+			'typeTeams' => $typeTeams,
         ]);
     }
 
@@ -96,12 +102,16 @@ class BadmintonMatchController extends Controller
     {
         $model = $this->findModel($id);
 
+		$matchTeams = [$model->firstTeam->id => $model->firstTeam->name, $model->secondTeam->id => $model->secondTeam->name];
+		$typeTeams = [$model->firstTeam->id => $model->firstTeam->name, $model->secondTeam->id => $model->secondTeam->name];
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'matchTeams' => $matchTeams,
+            'typeTeams' => $typeTeams,
         ]);
     }
 

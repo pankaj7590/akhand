@@ -5,17 +5,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\TournamentTeam */
 
-$this->title = 'Update Tournament Team: {nameAttribute}';
-$this->params['breadcrumbs'][] = ['label' => 'Tournament Teams', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->title = 'Update Tournament Team: '.$model->team->name;
+$this->params['breadcrumbs'][] = ['label' => 'Tournaments', 'url' => ['tournament/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->tournament->name, 'url' => ['tournament/update', 'id' => $model->tournament_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Teams', 'url' => ['index', 'id' => $model->tournament_id]];
+$this->params['breadcrumbs'][] = ['label' => $model->team->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="tournament-team-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
+<?= $this->render('_form', [
         'model' => $model,
     ]) ?>
-
-</div>

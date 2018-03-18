@@ -40,6 +40,7 @@ class TournamentMatch extends \yii\db\ActiveRecord
     {
         return [
             [['tournament_id', 'match_id'], 'required'],
+            [['tournament_id', 'match_id'], 'unique', 'targetAttribute' => ['tournament_id', 'match_id'], 'message' => 'Match is already added in the tournament.'],
             [['tournament_id', 'match_id', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['match_id'], 'exist', 'skipOnError' => true, 'targetClass' => Match::className(), 'targetAttribute' => ['match_id' => 'id']],
             [['tournament_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tournament::className(), 'targetAttribute' => ['tournament_id' => 'id']],

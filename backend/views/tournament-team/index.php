@@ -7,36 +7,50 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\search\TournamentTeamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tournament Teams';
+$this->title = 'Teams';
+$this->params['breadcrumbs'][] = ['label' => 'Tournaments', 'url' => ['tournament/index']];
+$this->params['breadcrumbs'][] = ['label' => $searchModel->tournament->name, 'url' => ['tournament/update', 'id' => $searchModel->tournament_id]];
 $this->params['breadcrumbs'][] = $this->title;
+$urlManager = Yii::$app->urlManager;
 ?>
-<div class="tournament-team-index">
+<div class="span12">
+	<div class="widget">
+		<div class="widget-header">
+			<i class="icon-flag-checkered"></i>
+	      	<h3><?= Html::encode($this->title) ?></h3>
+	  	</div>
+		<div class="widget-content">
+			<div class="member-index">
+				<div class="table-responsive">
+					<p>
+						<?= Html::a('Add Team', ['create', 'id' => $searchModel->tournament_id], ['class' => 'btn btn-success']) ?>
+					</p>
+					<?= GridView::widget([
+						'dataProvider' => $dataProvider,
+						'filterModel' => $searchModel,
+						'rowOptions' => function ($model, $key, $index, $grid) use ($urlManager) {
+							return ['onclick' => 'window.location = "'.$urlManager->createAbsoluteUrl(['tournament-team/update', 'id' => $model->id]).'"'];
+						},
+						'columns' => [
+							['class' => 'yii\grid\SerialColumn'],
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Tournament Team', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'tournament_id',
-            'team_id',
-            'entry_fee',
-            'is_paid',
-            //'status',
-            //'created_by',
-            //'updated_by',
-            //'created_at',
-            //'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+							[
+								'attribute' => 'team_id',
+								'value' => function($data){
+									return ($data->team->name);
+								},
+							],
+							'entry_fee',
+							[
+								'attribute' => 'is_paid',
+								'value' => function($data){
+									return ($data->is_paid?'Yes':'No');
+								},
+							],
+						],
+					]); ?>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

@@ -5,6 +5,8 @@ namespace common\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\web\UploadedFile;
+use common\components\MediaUploader;
 
 /**
  * This is the model class for table "team".
@@ -43,6 +45,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class Team extends \yii\db\ActiveRecord
 {
+	public $logoFile;
+	
     /**
      * @inheritdoc
      */
@@ -63,6 +67,7 @@ class Team extends \yii\db\ActiveRecord
             [['logo'], 'exist', 'skipOnError' => true, 'targetClass' => Media::className(), 'targetAttribute' => ['logo' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
+            [['logoFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,png'],
         ];
     }
 	
@@ -91,6 +96,7 @@ class Team extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'type' => 'Type',
+            'logoFile' => 'Logo',
         ];
     }
 
@@ -225,7 +231,7 @@ class Team extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLogo0()
+    public function getLogoPicture()
     {
         return $this->hasOne(Media::className(), ['id' => 'logo']);
     }
@@ -260,5 +266,25 @@ class Team extends \yii\db\ActiveRecord
     public function getTournamentTeams()
     {
         return $this->hasMany(TournamentTeam::className(), ['team_id' => 'id']);
+    }
+	
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+			$image = UploadedFile::getInstance($this, 'logoFile');
+			if($image){
+				if($image != null && !$image->getHasError()) {
+					if($mediaDetails = MediaUploader::uploadFiles($image)){
+						$this->logo = $mediaDetails['media_id'];
+					}
+				}
+			}
+            return true;
+        } else {
+            return false;
+        }
     }
 }

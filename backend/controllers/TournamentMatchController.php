@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use common\models\Tournament;
 use common\models\TournamentMatch;
 use common\models\search\TournamentMatchSearch;
 use yii\web\Controller;
@@ -43,9 +44,10 @@ class TournamentMatchController extends Controller
      * Lists all TournamentMatch models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $searchModel = new TournamentMatchSearch();
+		$searchModel->tournament_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -72,12 +74,23 @@ class TournamentMatchController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
+		$tournamentModel = $this->findTournamentModel($id);
+		
         $model = new TournamentMatch();
+		$model->tournament_id = $id;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())){
+			foreach($model->match_id as $match){
+				$tm = new TournamentMatch();
+				$tm->tournament_id = $id;
+				$tm->match_id = $match;
+				if(!$tm->save()){
+					Yii::$app->session->setFlash('error', json_encode($tm->errors));
+				}
+				return $this->redirect(['index', 'id' => $id]);
+			}
         }
 
         return $this->render('create', [
@@ -114,9 +127,10 @@ class TournamentMatchController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+		$model = $this->findModel($id);
+		$model->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id' => $model->tournament_id]);
     }
 
     /**
@@ -133,5 +147,21 @@ class TournamentMatchController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * Finds the Tournament model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Organization the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findTournamentModel($id)
+    {
+        if (($model = Tournament::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested tournament does not exist.');
     }
 }

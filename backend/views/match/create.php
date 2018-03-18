@@ -6,16 +6,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Match */
 
-$this->title = 'Create Match';
+$this->title = 'Add Cricket Match';
 $this->params['breadcrumbs'][] = ['label' => 'Matches', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="match-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
+<?= $this->render('_form', [
         'model' => $model,
+		'typeTeams' => $typeTeams,
     ]) ?>
-
-</div>
