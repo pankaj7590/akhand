@@ -36,3 +36,5 @@ phpunit.phar
 
 
 /frontend/web/uploads
+/backend/runtime
+/frontend/runtime
