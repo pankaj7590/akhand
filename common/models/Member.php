@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\web\IdentityInterface;
 use yii\web\UploadedFile;
 use common\components\MediaUploader;
 
@@ -46,9 +47,12 @@ use common\components\MediaUploader;
  * @property PlayerType[] $playerTypes
  * @property TeamMember[] $teamMembers
  */
-class Member extends \yii\db\ActiveRecord
+class Member extends \yii\db\ActiveRecord implements IdentityInterface
 {
 	public $profilePictureFile, $password;
+	
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 10;
     /**
      * @inheritdoc
      */

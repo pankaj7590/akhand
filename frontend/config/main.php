@@ -17,7 +17,7 @@ return [
             'csrfParam' => '_csrf-akhand-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\Player',
+            'identityClass' => 'common\models\Member',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-akhand-frontend', 'httpOnly' => true],
         ],
