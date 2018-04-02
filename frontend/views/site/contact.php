@@ -2,6 +2,10 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
+
 $this->title = 'Contact';
 
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,45 +38,56 @@ $baseUrl = $urlManager->baseUrl;
             <div class="col-md-7">
                 <h4>Get in touch</h4>	
                 <div class="leave-comment-wrap">
-                    <form>								
+					<?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>	
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="item">
+                                   <?= $form->field($model, 'name')->textInput(['autofocus' => true, 'class' => '']) ?>
+                                </div>	
+                            </div>
+						</div>	
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="item">
-                                    <label>
-                                        <span>Name <i>*</i></span>
-                                        <input type="text" name="name">
-                                    </label>
+									<?= $form->field($model, 'email')->textInput(['class' => '']) ?>
                                 </div>	
                             </div>
                             <div class="col-md-6">
                                 <div class="item">
-                                    <label>
-                                        <span>Email <i>*</i></span>
-                                        <input type="email" name="email">
-                                    </label>
+									<?= $form->field($model, 'phone')->textInput(['class' => '']) ?>
                                 </div>	
                             </div>
+						</div>	
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="item">
-                                    <label>
-                                        <span>Subject</span>
-                                        <input type="text" name="subjects">
-                                    </label>
+                                    <?= $form->field($model, 'subject')->textInput(['class' => '']) ?>
                                 </div>	
                             </div>
+						</div>	
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="item">
-                                    <label>
-                                        <span>Your message<i>*</i></span>
-                                        <textarea></textarea>
-                                    </label>
+                                    <?= $form->field($model, 'body')->textarea(['rows' => 6, 'class' => '']) ?>
                                 </div>
                             </div>
+						</div>	
+                        <div class="row">
                             <div class="col-md-12">
-                                <button class="comment-submit">Send us message</button>
+                                <div class="item">
+                                    <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+										'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+										'options' => ['class' => ''],
+									]) ?>
+                                </div>
+                            </div>
+						</div>	
+                        <div class="row">
+                            <div class="col-md-12">
+								<?= Html::submitButton('Send us message', ['class' => 'comment-submit', 'name' => 'contact-button']) ?>
                             </div>
                         </div>
-                    </form>
+					<?php ActiveForm::end(); ?>
                 </div>
             </div>
         </div>

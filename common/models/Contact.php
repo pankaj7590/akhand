@@ -12,6 +12,8 @@ use yii\behaviors\TimestampBehavior;
  * @property string $name
  * @property string $surname
  * @property string $email
+ * @property string $phone
+ * @property string $subject
  * @property int $feedback_type
  * @property string $message
  * @property int $status
@@ -20,6 +22,14 @@ use yii\behaviors\TimestampBehavior;
  */
 class Contact extends \yii\db\ActiveRecord
 {
+	const TYPE_FEEDBACK = 1;
+	const TYPE_CONTACT = 2;
+	
+	public static $types = [
+		self::TYPE_FEEDBACK => 'Feedback',
+		self::TYPE_CONTACT => 'Contact',
+	];
+	
     /**
      * @inheritdoc
      */
@@ -34,10 +44,11 @@ class Contact extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'surname'], 'required'],
+            [['name', 'email', 'phone', 'subject'], 'required'],
             [['feedback_type', 'status', 'created_at', 'updated_at'], 'integer'],
             [['message'], 'string'],
-            [['name', 'surname', 'email'], 'string', 'max' => 255],
+            [['phone'], 'string', 'max' => 15],
+            [['name', 'surname', 'email', 'subject'], 'string', 'max' => 255],
         ];
     }
 	
