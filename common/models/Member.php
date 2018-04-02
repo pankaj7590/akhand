@@ -68,7 +68,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['profile_picture', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'surname', 'username', 'auth_key', 'password_hash', 'email', 'phone'], 'required'],
+            [['name', 'username', 'auth_key', 'password_hash', 'email', 'phone'], 'required'],
             [['name', 'surname', 'username', 'password_hash', 'password_reset_token', 'email', 'password'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['phone'], 'string', 'max' => 20],
