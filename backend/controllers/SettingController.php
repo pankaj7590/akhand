@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\components\MediaTypes;
+use common\components\MediaUploader;
+use yii\web\UploadedFile;
 
 /**
  * SettingController implements the CRUD actions for Setting model.
@@ -117,6 +120,248 @@ class SettingController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all Theme Setting models.
+     * @return mixed
+     */
+    public function actionThemeOptions()
+    {
+        $searchModel = new SettingSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		//header options
+		$headerOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_HEADER])->all();
+		$headerOptions = [];
+		foreach($headerOptionModels as $model){
+			$headerOptions[$model->name] = $model;
+		}
+		//footer options
+		$footerOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_FOOTER])->all();
+		$footerOptions = [];
+		foreach($footerOptionModels as $model){
+			$footerOptions[$model->name] = $model;
+		}
+		// echo "<pre>";print_r($footerOptions);exit;
+		//home page options
+		$homePageOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_HOME])->all();
+		$homePageOptions = [];
+		foreach($homePageOptionModels as $model){
+			$homePageOptions[$model->name] = $model;
+		}
+		//home page options
+		$contactPageOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_CONTACT])->all();
+		$contactPageOptions = [];
+		foreach($contactPageOptionModels as $model){
+			$contactPageOptions[$model->name] = $model;
+		}
+		if(Yii::$app->request->post()){
+			$sent_options = Yii::$app->request->post();
+			
+			//SAVING HOME PAGE SLIDER SLIDES
+			$file = UploadedFile::getInstanceByName('home_page_main_slider_bg');
+			if ($file != null && !$file->getHasError()) {
+				$type = MediaTypes::THEME_OPTION;
+				$mediaDetails = MediaUploader::uploadFiles($file, $type);
+				if ($mediaDetails) {
+					$home_page_main_slider_bg_model = Setting::findOne(['name' => 'home_page_main_slider_bg']);
+					$home_page_main_slider_bg_model->value = strval($mediaDetails['media_id']);
+					$home_page_main_slider_bg_model->save();
+				}
+			}
+			
+			$sponsor_logos = UploadedFile::getInstancesByName('home_page_sponsors_slider_logos');
+			$logos = [];
+			foreach ($sponsor_logos as $k => $v) {
+				if ($v != null && !$v->getHasError()) {
+					$type = MediaTypes::THEME_OPTION;
+					$mediaDetails = MediaUploader::uploadFiles($v, $type);
+					if ($mediaDetails) {
+						$logos[] = $mediaDetails['media_id'];
+					}
+				}
+			}
+			if(count($logos)){
+				$home_page_sponsors_slider_logos_model = Setting::findOne(['name' => 'home_page_sponsors_slider_logos']);
+				$home_page_sponsors_slider_logos_model->value = json_encode($logos);
+				$home_page_sponsors_slider_logos_model->save();
+			}
+			
+			$file = UploadedFile::getInstanceByName('home_page_success_story_image');
+			if ($file != null && !$file->getHasError()) {
+				$type = MediaTypes::THEME_OPTION;
+				$mediaDetails = MediaUploader::uploadFiles($file, $type);
+				if ($mediaDetails) {
+					$home_page_success_story_image_model = Setting::findOne(['name' => 'home_page_success_story_image']);
+					$home_page_success_story_image_model->value = strval($mediaDetails['media_id']);
+					$home_page_success_story_image_model->save();
+				}
+			}
+			
+			$home_page_success_story_title = $sent_options['home_page_success_story_title'];
+			$home_page_success_story_title_model = Setting::findOne(['name' => 'home_page_success_story_title']);
+			if($home_page_success_story_title_model){
+				$home_page_success_story_title_model->value = $home_page_success_story_title;
+				$home_page_success_story_title_model->save();
+			}
+			$home_page_success_story_subtitle = $sent_options['home_page_success_story_subtitle'];
+			$home_page_success_story_subtitle_model = Setting::findOne(['name' => 'home_page_success_story_subtitle']);
+			if($home_page_success_story_subtitle_model){
+				$home_page_success_story_subtitle_model->value = $home_page_success_story_subtitle;
+				$home_page_success_story_subtitle_model->save();
+			}
+			$home_page_success_story_description = $sent_options['home_page_success_story_description'];
+			$home_page_success_story_description_model = Setting::findOne(['name' => 'home_page_success_story_description']);
+			if($home_page_success_story_description_model){
+				$home_page_success_story_description_model->value = $home_page_success_story_description;
+				$home_page_success_story_description_model->save();
+			}
+			
+			$home_page_join_us_title = $sent_options['home_page_join_us_title'];
+			$home_page_join_us_title_model = Setting::findOne(['name' => 'home_page_join_us_title']);
+			if($home_page_join_us_title_model){
+				$home_page_join_us_title_model->value = $home_page_join_us_title;
+				$home_page_join_us_title_model->save();
+			}
+			$home_page_join_us_button_text = $sent_options['home_page_join_us_button_text'];
+			$home_page_join_us_button_text_model = Setting::findOne(['name' => 'home_page_join_us_button_text']);
+			if($home_page_join_us_button_text_model){
+				$home_page_join_us_button_text_model->value = $home_page_join_us_button_text;
+				$home_page_join_us_button_text_model->save();
+			}
+			$home_page_join_us_button_link = $sent_options['home_page_join_us_button_link'];
+			$home_page_join_us_button_link_model = Setting::findOne(['name' => 'home_page_join_us_button_link']);
+			if($home_page_join_us_button_link_model){
+				$home_page_join_us_button_link_model->value = $home_page_join_us_button_link;
+				$home_page_join_us_button_link_model->save();
+			}
+			
+			//SAVING HEADER OPTIONS
+			$file = UploadedFile::getInstanceByName('menu_bar_logo');
+			if ($file != null && !$file->getHasError()) {
+				$type = MediaTypes::THEME_OPTION;
+				$mediaDetails = MediaUploader::uploadFiles($file, $type);
+				if ($mediaDetails) {
+					$menu_bar_logo_model = Setting::findOne(['name' => 'menu_bar_logo']);
+					$menu_bar_logo_model->value = strval($mediaDetails['media_id']);
+					$menu_bar_logo_model->save();
+				}
+			}
+			
+			$twitter = $sent_options['twitter'];
+			$twitter_model = Setting::findOne(['name' => 'twitter']);
+			if($twitter_model){
+				$twitter_model->value = $twitter;
+				$twitter_model->save();
+			}
+			$gplus = $sent_options['gplus'];
+			$gplus_model = Setting::findOne(['name' => 'gplus']);
+			if($gplus_model){
+				$gplus_model->value = $gplus;
+				$gplus_model->save();
+			}
+			$instagram = $sent_options['instagram'];
+			$instagram_model = Setting::findOne(['name' => 'instagram']);
+			if($instagram_model){
+				$instagram_model->value = $instagram;
+				$instagram_model->save();
+			}
+			$facebook = $sent_options['facebook'];
+			$facebook_model = Setting::findOne(['name' => 'facebook']);
+			if($facebook_model){
+				$facebook_model->value = $facebook;
+				$facebook_model->save();
+			}
+			$pinterest = $sent_options['pinterest'];
+			$pinterest_model = Setting::findOne(['name' => 'pinterest']);
+			if($pinterest_model){
+				$pinterest_model->value = $pinterest;
+				$pinterest_model->save();
+			}
+			$header_phone = $sent_options['header_phone'];
+			$header_phone_model = Setting::findOne(['name' => 'header_phone']);
+			if($header_phone_model){
+				$header_phone_model->value = $header_phone;
+				$header_phone_model->save();
+			}
+			$header_email = $sent_options['header_email'];
+			$header_email_model = Setting::findOne(['name' => 'header_email']);
+			if($header_email_model){
+				$header_email_model->value = $header_email;
+				$header_email_model->save();
+			}
+			
+			//SAVING FOOTER OPTIONS			
+			$footer_description = $sent_options['footer_description'];
+			$footer_description_model = Setting::findOne(['name' => 'footer_description']);
+			if($footer_description_model){
+				$footer_description_model->value = $footer_description;
+				$footer_description_model->save();
+			}
+			$footer_contact_address = $sent_options['footer_contact_address'];
+			$footer_contact_address_model = Setting::findOne(['name' => 'footer_contact_address']);
+			if($footer_contact_address_model){
+				$footer_contact_address_model->value = $footer_contact_address;
+				$footer_contact_address_model->save();
+			}
+			$footer_contact_email = $sent_options['footer_contact_email'];
+			$footer_contact_email_model = Setting::findOne(['name' => 'footer_contact_email']);
+			if($footer_contact_email_model){
+				$footer_contact_email_model->value = $footer_contact_email;
+				$footer_contact_email_model->save();
+			}
+			$footer_contact_phone = $sent_options['footer_contact_phone'];
+			$footer_contact_phone_model = Setting::findOne(['name' => 'footer_contact_phone']);
+			if($footer_contact_phone_model){
+				$footer_contact_phone_model->value = $footer_contact_phone;
+				$footer_contact_phone_model->save();
+			}
+			$footer_developer = $sent_options['footer_developer'];
+			$footer_developer_model = Setting::findOne(['name' => 'footer_developer']);
+			if($footer_developer_model){
+				$footer_developer_model->value = $footer_developer;
+				$footer_developer_model->save();
+			}
+			$footer_copyright = $sent_options['footer_copyright'];
+			$footer_copyright_model = Setting::findOne(['name' => 'footer_copyright']);
+			if($footer_copyright_model){
+				$footer_copyright_model->value = $footer_copyright;
+				$footer_copyright_model->save();
+			}
+			for($i=1;$i<=6;$i++){
+				$footer_quick_link_label = $sent_options['footer_quick_link_'.$i.'_label'];
+				$footer_quick_link_label_model = Setting::findOne(['name' => 'footer_quick_link_'.$i.'_label']);
+				if($footer_quick_link_label_model){
+					$footer_quick_link_label_model->value = $footer_quick_link_label;
+					$footer_quick_link_label_model->save();
+				}
+				$footer_quick_link_link = $sent_options['footer_quick_link_'.$i.'_link'];
+				$footer_quick_link_link_model = Setting::findOne(['name' => 'footer_quick_link_'.$i.'_link']);
+				if($footer_quick_link_link_model){
+					$footer_quick_link_link_model->value = $footer_quick_link_link;
+					$footer_quick_link_link_model->save();
+				}
+			}
+			//CONTACT PAGE OPTIONS
+			$contact_map_address = $sent_options['contact_map_address'];
+			$contact_map_address_model = Setting::findOne(['name' => 'contact_map_address']);
+			if($contact_map_address_model){
+				$contact_map_address_model->value = $contact_map_address;
+				$contact_map_address_model->save();
+			}
+			
+			return $this->redirect(['theme-options']);
+		}
+
+        return $this->render('theme_options', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'headerOptions' => $headerOptions,
+            'footerOptions' => $footerOptions,
+            'homePageOptions' => $homePageOptions,
+            'contactPageOptions' => $contactPageOptions,
+        ]);
     }
 
     /**

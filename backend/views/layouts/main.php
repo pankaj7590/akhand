@@ -143,6 +143,7 @@ $baseUrl = $urlManager->baseUrl;
 				['label' => '<i class="icon-rupee"></i><span>Payments</span> ', 'url' => ['payment/index']],
 				['label' => '<i class="icon-gears"></i><span>Settings</span> ', 'url' => '#',
 					'items' => [
+						['label' => 'Theme Options ', 'url' => ['setting/theme-options']],
 						['label' => 'Add New ', 'url' => ['setting/create']],
 						['label' => 'Manage ', 'url' => ['setting/index']],
 					]

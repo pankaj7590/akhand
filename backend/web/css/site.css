@@ -79,3 +79,38 @@
 .header-btns {
     margin-right: 6px;
 }
+.clear{
+	clear:both;
+}
+.text-right{
+	text-align:right;
+}
+.mt20{
+	margin-top:20px;
+}
+.pagination li.next.disabled span {
+    border-left-width: 1px;
+    -webkit-border-radius: 0px 3px 3px 0px;
+    -moz-border-radius: 0px 3px 3px 0px;
+    border-radius: 0px 3px 3px 0px;
+    float: left;
+    padding: 0 14px;
+    line-height: 34px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-left: none;
+}
+.pagination li.prev.disabled span {
+    border-left-width: 1px;
+    -webkit-border-radius: 3px 0px 0px 3px;
+    -moz-border-radius: 3px 0px 0px 3px;
+    border-radius: 3px 0px 0px 3px;
+    float: left;
+    padding: 0 14px;
+    line-height: 34px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+}
+.float-left{
+	float:left;
+}

@@ -37,30 +37,12 @@ $baseUrl = $urlManager->baseUrl;
                         <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
                     </ul>
                     <ul class="contacts">
-                        <li class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i>+61 3 8376 6284</li>
-                        <li class="skype"><a href="callto:team.skype"><i class="fa fa-skype" aria-hidden="true"></i>team.skype</a></li>
+                        <li class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i>+8956 617 443</li>
+                        <li class="skype"><a href="mailto:pankaj@salokhe.in"><i class="fa fa-envelope" aria-hidden="true"></i>pankaj@salokhe.in</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-5">
-                <div class="top-language">
-                    <ul class="list">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?= $baseUrl;?>/images/common/en-flag.png" alt="selected language">EN</a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#"><img src="<?= $baseUrl;?>/images/common/fr-flag.png" alt="language">FR</a>
-                                </li>
-                                <li>
-                                    <a href="#"><img src="<?= $baseUrl;?>/images/common/en-flag.png" alt="language">EN</a>
-                                </li>
-                                <li>
-                                    <a href="#"><img src="<?= $baseUrl;?>/images/common/ru-flag.png" alt="language">RU</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
                     <div class="top-search">
                             <form>
                                     <input type="text" name="text">
@@ -92,22 +74,16 @@ $baseUrl = $urlManager->baseUrl;
 			]);
 			$menuItems = [
 				[
-					'label' => '<span>Home</span>', 'url' => ['/site/index'], 'encode' => false, 
-					'items' => [
-						['label' => '<span>Home</span>', 'url' => ['/site/index'], 'encode' => false,],
-					]
+					'label' => '<span>Home</span>', 'url' => ['/site/index'], 'encode' => false,
 				],
-				['label' => '<span>Matches</span>', 'url' => ['/site/matches'], 'encode' => false, 
+				['label' => '<span>Matches</span>', 'url' => ['/match/index'], 'encode' => false, 
 					'items' => [
-						['label' => '<span>Home</span>', 'url' => ['/site/index'], 'encode' => false, 
-							'items' => [
-								['label' => '<span>Home</span>', 'url' => ['/site/index'], 'encode' => false,],
-							]
-						],
+						['label' => '<span>Tournaments</span>', 'url' => ['/tournament/index'], 'encode' => false],
+						['label' => '<span>All</span>', 'url' => ['/match/index'], 'encode' => false],
 					]],
-				['label' => '<span>Team</span>', 'url' => ['/site/staff'], 'encode' => false],
-				['label' => '<span>News</span>', 'url' => ['/site/news'], 'encode' => false],
-				['label' => '<span>News Single</span>', 'url' => ['/site/news-single'], 'encode' => false],
+				['label' => '<span>Team</span>', 'url' => ['/team/index'], 'encode' => false],
+				['label' => '<span>News</span>', 'url' => ['/news/index'], 'encode' => false],
+				['label' => '<span>Events</span>', 'url' => ['/event/index'], 'encode' => false],
 				['label' => '<span>Contact</span>', 'url' => ['/site/contact'], 'encode' => false],
 			];
 			if (Yii::$app->user->isGuest) {

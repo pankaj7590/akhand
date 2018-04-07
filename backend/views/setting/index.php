@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Setting;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\SettingSearch */
@@ -9,6 +10,7 @@ use yii\grid\GridView;
 
 $this->title = 'Settings';
 $this->params['breadcrumbs'][] = $this->title;
+$urlManager = Yii::$app->urlManager;
 ?>
 <div class="span12">
 	<div class="widget">
@@ -21,21 +23,29 @@ $this->params['breadcrumbs'][] = $this->title;
 				<p>
 					<?= Html::a('Add New', ['create'], ['class' => 'btn btn-success']) ?>
 				</p>
-				<?= GridView::widget([
-					'dataProvider' => $dataProvider,
-					'filterModel' => $searchModel,
-					'rowOptions' => function ($model, $key, $index, $grid) use ($urlManager) {
-						return ['onclick' => 'window.location = "'.$urlManager->createAbsoluteUrl(['setting/update', 'id' => $model->id]).'"'];
-					},
-					'columns' => [
-						['class' => 'yii\grid\SerialColumn'],
+				<div class="table-responsive">
+					<?= GridView::widget([
+						'dataProvider' => $dataProvider,
+						'filterModel' => $searchModel,
+						'rowOptions' => function ($model, $key, $index, $grid) use ($urlManager) {
+							return ['onclick' => 'window.location = "'.$urlManager->createAbsoluteUrl(['setting/update', 'id' => $model->id]).'"'];
+						},
+						'columns' => [
+							['class' => 'yii\grid\SerialColumn'],
 
-						'name',
-						'label',
-						'default_value:ntext',
-						'value:ntext',
-					],
-				]); ?>
+							[
+								'attribute' => 'setting_group',
+								'filter' => Setting::$groups,
+								'value' => function($data){
+									return ($data->setting_group?Setting::$groups[$data->setting_group]:NULL);
+								},
+							],
+							'name',
+							'label',
+							'value:ntext',
+						],
+					]); ?>
+				</div>
 			</div>
 		</div>
 	</div>

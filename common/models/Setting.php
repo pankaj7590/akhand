@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "setting".
  *
  * @property int $id
+ * @property int $setting_group
  * @property string $name
  * @property string $label
  * @property string $default_value
@@ -25,6 +26,18 @@ use yii\behaviors\TimestampBehavior;
  */
 class Setting extends \yii\db\ActiveRecord
 {
+	const GROUP_HEADER = 1;
+	const GROUP_FOOTER = 2;
+	const GROUP_HOME = 3;
+	const GROUP_CONTACT = 4;
+	
+	public static $groups = [
+		self::GROUP_HEADER => 'Header',
+		self::GROUP_FOOTER => 'Footer',
+		self::GROUP_HOME => 'Home Page',
+		self::GROUP_CONTACT => 'Contact Page',
+	];
+	
     /**
      * @inheritdoc
      */
@@ -39,9 +52,10 @@ class Setting extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'label', 'default_value', 'value'], 'required'],
+            [['name', 'label'], 'required'],
+            [['name'], 'unique'],
             [['default_value', 'value'], 'string'],
-            [['status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['status', 'created_by', 'updated_by', 'created_at', 'updated_at', 'setting_group'], 'integer'],
             [['name', 'label'], 'string', 'max' => 255],
             [['name'], 'unique'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
@@ -93,4 +107,8 @@ class Setting extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
+	
+	public function getMedia(){
+		return $this->hasOne(Media::className(), ['id' => 'value']);
+	}
 }
