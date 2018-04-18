@@ -25,6 +25,16 @@ use yii\behaviors\TimestampBehavior;
  */
 class OrganizationMember extends \yii\db\ActiveRecord
 {
+	const STATUS_REQUESTED = 1;
+	const STATUS_REJECTED = 5;
+	const STATUS_ACTIVE = 10;
+	
+	public $statuses = [
+		self::STATUS_REQUESTED => 'Requested',
+		self::STATUS_REJECTED => 'Rejected',
+		self::STATUS_ACTIVE => 'Active',
+	];
+	
     /**
      * @inheritdoc
      */

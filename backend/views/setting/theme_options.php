@@ -116,7 +116,7 @@ $urlManager = Yii::$app->urlManager;
 										echo '<input type="text" id="themeoption-footer_contact_email" class="form-control" name="footer_contact_email" value="'.$footer_contact_email.'"/>';
 										echo '<label class="control-label" for="themeoption-footer_contact_phone">Phone</label>';
 										echo '<input type="text" id="themeoption-footer_contact_phone" class="form-control" name="footer_contact_phone" value="'.$footer_contact_phone.'">';
-										echo '<label class="control-label" for="themeoption-footer_developer">Fax</label>';
+										echo '<label class="control-label" for="themeoption-footer_developer">Developer</label>';
 										echo '<input type="text" id="themeoption-footer_developer" class="form-control" name="footer_developer" value="'.$footer_developer.'">';
 										echo '<label class="control-label" for="themeoption-footer_copyright">Copyright</label>';
 										echo '<input type="text" id="themeoption-footer_copyright" class="form-control" name="footer_copyright" value="'.$footer_copyright.'">';

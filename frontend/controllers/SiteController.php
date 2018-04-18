@@ -13,6 +13,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\Contact;
+use common\models\Organization;
 
 /**
  * Site controller
@@ -179,6 +180,12 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+		$organizationModels = Organization::find()->all();
+		$organizations = [];
+		foreach($organizationModels as $organization){
+			$organizations[$organization->id] = $organization->name;
+		}
+		
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -190,6 +197,7 @@ class SiteController extends Controller
 
         return $this->render('signup', [
             'model' => $model,
+            'organizations' => $organizations,
         ]);
     }
 

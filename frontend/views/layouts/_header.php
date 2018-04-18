@@ -81,7 +81,7 @@ $baseUrl = $urlManager->baseUrl;
 						['label' => '<span>Tournaments</span>', 'url' => ['/tournament/index'], 'encode' => false],
 						['label' => '<span>All</span>', 'url' => ['/match/index'], 'encode' => false],
 					]],
-				['label' => '<span>Team</span>', 'url' => ['/team/index'], 'encode' => false],
+				['label' => '<span>Teams</span>', 'url' => ['/team/index'], 'encode' => false],
 				['label' => '<span>News</span>', 'url' => ['/news/index'], 'encode' => false],
 				['label' => '<span>Events</span>', 'url' => ['/event/index'], 'encode' => false],
 				['label' => '<span>Contact</span>', 'url' => ['/site/contact'], 'encode' => false],

@@ -10,3 +10,15 @@
 .main-menu span.caret{
 	display:none;
 }
+.leave-comment-wrap .item select{
+    padding: 15px 10px;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #fff;
+    font-size: 14px;
+    color: #666;
+    line-height: normal;
+    border-radius: 0;
+    height: 51px;
+	box-shadow:none;
+}

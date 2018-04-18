@@ -38,17 +38,37 @@ $this->params['breadcrumbs'][] = $this->title;
 						<div class="row">
 							<div class="col-md-12">
 								<div class="item">
-									<?= $form->field($model, 'username')->textInput(['autofocus' => true, 'class' => '']) ?>
+									<?= $form->field($model, 'organization')->dropdownList($organizations, ['prompt' => 'Select organization to request']); ?>
 								</div>	
 							</div>
 							<div class="col-md-12">
 								<div class="item">
-									<?= $form->field($model, 'email')->textInput(['autofocus' => true, 'class' => '']) ?>
+									<?= $form->field($model, 'name')->textInput(['autofocus' => true, 'class' => '']) ?>
+								</div>	
+							</div>
+							<div class="col-md-12">
+								<div class="item">
+									<?= $form->field($model, 'username')->textInput(['class' => '']) ?>
+								</div>	
+							</div>
+							<div class="col-md-12">
+								<div class="item">
+									<?= $form->field($model, 'phone')->textInput(['class' => '']) ?>
+								</div>	
+							</div>
+							<div class="col-md-12">
+								<div class="item">
+									<?= $form->field($model, 'email')->textInput(['class' => '']) ?>
 								</div>	
 							</div>
 							<div class="col-md-12">
 								<div class="item">
 									<?= $form->field($model, 'password')->passwordInput(['class' => '']) ?>
+								</div>	
+							</div>
+							<div class="col-md-12">
+								<div class="item">
+									<?= $form->field($model, 'captcha')->widget(\yii\captcha\Captcha::classname(), ['options' => ['class' => '']]) ?>
 								</div>	
 							</div>
 							<div class="col-md-12">
