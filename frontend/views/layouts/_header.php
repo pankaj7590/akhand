@@ -9,6 +9,9 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use common\models\Setting;
+use common\models\Media;
+use common\components\MediaHelper;
 
 AppAsset::register($this);
 
@@ -30,15 +33,35 @@ $baseUrl = $urlManager->baseUrl;
             <div class="col-md-7 hidden-sm hidden-xs">
                 <div class="top-contacts">
                     <ul class="socials">
-                        <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+						<?php
+							$headerOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_HEADER])->all();
+							$headerOptions = [];
+							foreach($headerOptionModels as $model){
+								$headerOptions[$model->name] = $model;
+							}
+							$facebook = $headerOptions['facebook']['value'];
+							$twitter = $headerOptions['twitter']['value'];
+							$gplus = $headerOptions['gplus']['value'];
+							$pinterest = $headerOptions['pinterest']['value'];
+							$instagram = $headerOptions['instagram']['value'];
+							$header_phone = $headerOptions['header_phone']['value'];
+							$header_email = $headerOptions['header_email']['value'];
+							$menu_bar_logo = $headerOptions['menu_bar_logo'];
+							if($menu_bar_logo->media){
+								$logoUrl = MediaHelper::getImageUrl($menu_bar_logo->media->file_name);
+							}else{
+								$logoUrl = $baseUrl.'/images/logo.png';
+							}
+						?>
+                        <li><a href="<?= $facebook;?>"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+                        <li><a href="<?= $twitter;?>"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="<?= $gplus;?>"><i class="fa fa-google" aria-hidden="true"></i></a></li>
+                        <li><a href="<?= $pinterest;?>"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                        <li><a href="<?= $instagram;?>"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
                     </ul>
                     <ul class="contacts">
-                        <li class="phone"><i class="fa fa-phone-square" aria-hidden="true"></i>+8956 617 443</li>
-                        <li class="skype"><a href="mailto:pankaj@salokhe.in"><i class="fa fa-envelope" aria-hidden="true"></i>pankaj@salokhe.in</a></li>
+                        <li class="phone"><a href="tel:<?= $header_phone;?>"><i class="fa fa-phone-square" aria-hidden="true"></i><?= $header_phone;?></a></li>
+                        <li class="skype"><a href="mailto:<?= $header_email;?>"><i class="fa fa-envelope" aria-hidden="true"></i><?= $header_email;?></a></li>
                     </ul>
                 </div>
             </div>
@@ -59,7 +82,7 @@ $baseUrl = $urlManager->baseUrl;
     <!--MAIN MENU WRAP BEGIN-->
 <div class="main-menu-wrap sticky-menu">
     <div class="container">
-        <a href="index-2.html" class="custom-logo-link"><img src="<?= $baseUrl;?>/images/soccer/logo.png" alt="logo" class="custom-logo"></a>
+        <a href="<?= $urlManager->createAbsoluteUrl(['site/index'])?>" class="custom-logo-link"><img src="<?= ($logoUrl?$logoUrl:'/images/soccer/logo.png');?>" alt="logo" class="custom-logo"></a>
 		<?php
 			NavBar::begin([
 				// 'brandLabel' => Yii::$app->name,

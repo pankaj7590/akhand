@@ -9,6 +9,9 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use common\models\Setting;
+use common\models\Media;
+use common\components\MediaHelper;
 
 AppAsset::register($this);
 
@@ -24,14 +27,48 @@ $baseUrl = $urlManager->baseUrl;
                 <div class="col-md-4 col-sm-12">
                     <div class="footer-left">
                         <div class="wrap">
-                            <a href="index-2.html" class="foot-logo"><img src="<?= $baseUrl;?>/images/soccer/footer-logo.png" alt="footer-logo"></a>
-                            <p>Activated charcoal trust fund ugh prism af, beard marfa air plant stumptown gastropub farm-to-table jianbing.</p>
+							<?php
+								$headerOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_HEADER])->all();
+								$headerOptions = [];
+								foreach($headerOptionModels as $model){
+									$headerOptions[$model->name] = $model;
+								}
+								$facebook = $headerOptions['facebook']['value'];
+								$twitter = $headerOptions['twitter']['value'];
+								$gplus = $headerOptions['gplus']['value'];
+								$pinterest = $headerOptions['pinterest']['value'];
+								$instagram = $headerOptions['instagram']['value'];
+								$header_phone = $headerOptions['header_phone']['value'];
+								$header_email = $headerOptions['header_email']['value'];
+								$menu_bar_logo = $headerOptions['menu_bar_logo'];
+								if($menu_bar_logo->media){
+									$logoUrl = MediaHelper::getImageUrl($menu_bar_logo->media->file_name);
+								}else{
+									$logoUrl = $baseUrl.'/images/logo.png';
+								}
+								
+								$footerOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_FOOTER])->all();
+								$footerOptions = [];
+								foreach($footerOptionModels as $model){
+									$footerOptions[$model->name] = $model;
+								}
+								$footer_description = $footerOptions['footer_description']['value'];
+								$footer_contact_address = $footerOptions['footer_contact_address']['value'];
+								$footer_contact_email = $footerOptions['footer_contact_email']['value'];
+								$footer_contact_phone = $footerOptions['footer_contact_phone']['value'];
+								$footer_developer = $footerOptions['footer_developer']['value'];
+								$footer_copyright = $footerOptions['footer_copyright']['value'];
+								$footer_quick_links = [];
+								for($i=1;$i<=6;$i++){
+									$footer_quick_links[$footerOptions['footer_quick_link_'.$i.'_label']['value']] = $footerOptions['footer_quick_link_'.$i.'_link']['value'];
+								}
+							?>
+                            <a href="<?= $urlManager->createAbsoluteUrl(['site/index'])?>" class="foot-logo"><img src="<?= ($logoUrl?$logoUrl:'/images/soccer/logo.png');?>" alt="footer-logo"></a>
+                            <p><?= $footer_description;?></p>
                             <ul class="foot-left-menu">
-                                <li><a href="staff.html">First team</a></li>
-                                <li><a href="staff.html">Second team</a></li>
-                                <li><a href="amateurs.html">Amateurs</a></li>
-                                <li><a href="donations.html">Donation</a></li>
-                                <li><a href="trophies.html">trophies</a></li>
+								<?php foreach($footer_quick_links as $label => $link){?>
+									<li><a href="<?= $link;?>"><?= $label;?></a></li>
+								<?php }?>
                             </ul>
                         </div>
                     </div>
@@ -52,16 +89,16 @@ $baseUrl = $urlManager->baseUrl;
                     <div class="foot-contact">
                         <h4>Contact us</h4>
                         <ul class="contact-list">
-                            <li><i class="fa fa-flag" aria-hidden="true"></i><span>276 Upper Parliament Street, Liverpool L8, Great Britain</span></li>
-                            <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:team@email.com">team@email.com</a></li>
-                            <li class="phone"><i class="fa fa-phone" aria-hidden="true"></i><span>+61 3 8376 6284</span></li>
+                            <li><i class="fa fa-flag" aria-hidden="true"></i><span><?= $footer_contact_address;?></span></li>
+                            <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:<?= $footer_contact_email;?>"><?= $footer_contact_email;?></a></li>
+                            <li class="phone"><i class="fa fa-phone" aria-hidden="true"></i><a href="mailto:<?= $footer_contact_phone;?>"><span><?= $footer_contact_phone;?></span></a></li>
                         </ul>
                         <ul class="socials">
-                            <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                            <li><a href="<?= $facebook;?>"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+                            <li><a href="<?= $twitter;?>"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="<?= $gplus;?>"><i class="fa fa-google" aria-hidden="true"></i></a></li>
+                            <li><a href="<?= $pinterest;?>"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                            <li><a href="<?= $instagram;?>"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -74,9 +111,10 @@ $baseUrl = $urlManager->baseUrl;
                 <div class="col-md-12">
                     <ul class="footer-menu">
                         <li><a href="<?= $urlManager->createAbsoluteUrl(['site/index']);?>"><span>Home</span></a></li>
-                        <li><a href="<?= $urlManager->createAbsoluteUrl(['site/matches']);?>"><span>Matches</span></a></li>
-                        <li><a href="<?= $urlManager->createAbsoluteUrl(['site/staff']);?>"><span>Team</span></a></li>
-                        <li><a href="<?= $urlManager->createAbsoluteUrl(['site/news']);?>"><span>News</span></a></li>
+                        <li><a href="<?= $urlManager->createAbsoluteUrl(['match/index']);?>"><span>Matches</span></a></li>
+                        <li><a href="<?= $urlManager->createAbsoluteUrl(['team/index']);?>"><span>Team</span></a></li>
+                        <li><a href="<?= $urlManager->createAbsoluteUrl(['news/index']);?>"><span>News</span></a></li>
+                        <li><a href="<?= $urlManager->createAbsoluteUrl(['event/index']);?>"><span>News</span></a></li>
                         <li><a href="<?= $urlManager->createAbsoluteUrl(['site/contact']);?>"><span>Contact</span></a></li>
 						<?php if(Yii::$app->user->isGuest){?>
 							<li><a href="<?= $urlManager->createAbsoluteUrl(['site/login']);?>"><span>Login</span></a></li>
@@ -95,12 +133,12 @@ $baseUrl = $urlManager->baseUrl;
             <div class="row">
                 <div class="col-xs-6">
                     <div class="copyrights">
-                        &copy; <?= date('Y') ?> <?= Html::encode(Yii::$app->name) ?>
+                        &copy; <?= date('Y') ?> <?= ($footer_copyright?$footer_copyright:Html::encode(Yii::$app->name)) ?>
                     </div>
                 </div>
                 <div class="col-xs-6">
                     <div class="created">
-                        <a href="http://salokhe.in">Developed by <img src="<?= $baseUrl;?>/images/common/created-icon.png" alt="create-by-image"> Pankaj Salokhe</a>
+                        <a href="#">Developed by <img src="<?= $baseUrl;?>/images/common/created-icon.png" alt="create-by-image"> <?= $footer_developer;?></a>
                     </div>
                 </div>
             </div>

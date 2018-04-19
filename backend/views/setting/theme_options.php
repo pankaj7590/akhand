@@ -124,11 +124,11 @@ $urlManager = Yii::$app->urlManager;
 									foreach($footer_quick_links as $key => $value){
 										echo '<div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">';
 											echo '<label class="control-label" for="themeoption-'.$value['label']['name'].'">'.$value['label']['label'].'</label>';
-											echo '<input type="text" id="themeoption-footer_contact_email" class="form-control" name="'.$value['label']['name'].'" value="'.$value['label']['value'].'"/>';
+											echo '<input type="text" id="themeoption-'.$value['label']['name'].'" class="form-control" name="'.$value['label']['name'].'" value="'.$value['label']['value'].'"/>';
 										echo '</div>';
 										echo '<div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">';
 											echo '<label class="control-label" for="themeoption-'.$value['link']['name'].'">'.$value['link']['label'].'</label>';
-											echo '<input type="text" id="themeoption-footer_contact_email" class="form-control" name="'.$value['link']['name'].'" value="'.$value['link']['value'].'"/>';
+											echo '<input type="text" id="themeoption-'.$value['link']['name'].'" class="form-control" name="'.$value['link']['name'].'" value="'.$value['link']['value'].'"/>';
 										echo '</div>';
 									}
 								?>

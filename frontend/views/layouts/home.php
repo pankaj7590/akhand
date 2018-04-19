@@ -9,6 +9,9 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use common\models\Setting;
+use common\models\Media;
+use common\components\MediaHelper;
 
 AppAsset::register($this);
 
@@ -53,172 +56,208 @@ $baseUrl = $urlManager->baseUrl;
 <body>
 	<?php $this->beginBody() ?>
 	<?= $this->render('_header');?>
+	<?php
+		$homePageOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_HOME])->all();
+		$homePageOptions = [];
+		foreach($homePageOptionModels as $model){
+			$homePageOptions[$model->name] = $model;
+		}
+		$home_page_success_story_title = $homePageOptions['home_page_success_story_title']['value'];
+		$home_page_success_story_subtitle = $homePageOptions['home_page_success_story_subtitle']['value'];
+		$home_page_success_story_description = $homePageOptions['home_page_success_story_description']['value'];
+		$home_page_join_us_title = $homePageOptions['home_page_join_us_title']['value'];
+		$home_page_join_us_button_text = $homePageOptions['home_page_join_us_button_text']['value'];
+		$home_page_join_us_button_link = $homePageOptions['home_page_join_us_button_link']['value'];
+		$home_page_sponsors_slider_logos = $homePageOptions['home_page_sponsors_slider_logos']['value'];
+		$home_page_sponsors_slider_logos_arr = [];
+		if($home_page_sponsors_slider_logos){
+			$temp = json_decode($home_page_sponsors_slider_logos);
+			foreach($temp as $media){
+				$mediaModel = Media::findOne($media);
+				if($mediaModel){
+					$home_page_sponsors_slider_logos_arr[] = MediaHelper::getImageUrl($mediaModel->file_name);
+				}
+			}
+		}
+		$home_page_main_slider_bg = $homePageOptions['home_page_main_slider_bg'];
+		if($home_page_main_slider_bg->media){
+			$home_page_main_slider_bg_url = MediaHelper::getImageUrl($home_page_main_slider_bg->media->file_name);
+		}else{
+			$home_page_main_slider_bg_url = $baseUrl.'/images/soccer/main-slider.jpg';
+		}
+		$this->registerCss("
+			.main-slider-section {
+				background: url(".$home_page_main_slider_bg_url.") no-repeat!important;
+				background-size: cover;
+			}
+		");
+	?>
     <div class="main-slider-section">
-    <div class="main-slider">
-        <div id="main-slider" class="carousel slide" data-ride="carousel" data-interval="4000">
-            <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <div class="main-slider-caption">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="match-date">26 Sep 2016 / 9:30 PM / city arena</div>
-                                    <div class="team"> Team Name 1
-                                        <div class="big-count">
-                                            2:0
-                                        </div>
-                                        Team Name 2
-                                    </div>                                    
-                                    <div class="booking">
-                                        <a href="matches-list.html">
-                                            Match Page
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="main-slider-caption">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="match-date">26 Sep 2016 / 9:30 PM / city arena</div>
-                                    <div class="team"> Team Name 1 - Team Name 2
-                                    </div>                                        
-                                    <div class="counter" data-date="1534185200000">
-                                        <ul>
-                                            <li>
-                                                <div class="digit days"></div>
-                                                <div class="descr">Days</div>
-                                            </li>
-                                            <li>
-                                                <div class="digit hours"></div>
-                                                <div class="descr">Hours</div>
-                                            </li>
-                                            <li>
-                                                <div class="digit minutes"></div>
-                                                <div class="descr">Minutes</div>
-                                            </li>
-                                            <li>
-                                                <div class="digit seconds"></div>
-                                                <div class="descr">Seconds</div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="booking">
-                                        <a href="match-live.html">
-                                            Watch live
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+		<div class="main-slider">
+			<div id="main-slider" class="carousel slide" data-ride="carousel" data-interval="4000">
+				<div class="carousel-inner" role="listbox">
+					<div class="item active">
+						<div class="main-slider-caption">
+							<div class="container">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="match-date">26 Sep 2016 / 9:30 PM / city arena</div>
+										<div class="team"> Team Name 1
+											<div class="big-count">
+												2:0
+											</div>
+											Team Name 2
+										</div>                                    
+										<div class="booking">
+											<a href="matches-list.html">
+												Match Page
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="item">
+						<div class="main-slider-caption">
+							<div class="container">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="match-date">26 Sep 2016 / 9:30 PM / city arena</div>
+										<div class="team"> Team Name 1 - Team Name 2
+										</div>                                        
+										<div class="counter" data-date="1534185200000">
+											<ul>
+												<li>
+													<div class="digit days"></div>
+													<div class="descr">Days</div>
+												</li>
+												<li>
+													<div class="digit hours"></div>
+													<div class="descr">Hours</div>
+												</li>
+												<li>
+													<div class="digit minutes"></div>
+													<div class="descr">Minutes</div>
+												</li>
+												<li>
+													<div class="digit seconds"></div>
+													<div class="descr">Seconds</div>
+												</li>
+											</ul>
+										</div>
+										<div class="booking">
+											<a href="match-live.html">
+												Watch live
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                <div class="item">
-                    <div class="main-slider-caption">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="match-date">26 Sep 2016 / 9:30 PM / city arena</div>
-                                    <div class="team"> Team Name 1
-                                        <div class="big-count">
-                                            2:0
-                                        </div>
-                                        Team Name 2
-                                    </div>                                                                          
-                                    <div class="booking">
-                                        <a href="match-live.html">
-                                            Watch live
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+					<div class="item">
+						<div class="main-slider-caption">
+							<div class="container">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="match-date">26 Sep 2016 / 9:30 PM / city arena</div>
+										<div class="team"> Team Name 1
+											<div class="big-count">
+												2:0
+											</div>
+											Team Name 2
+										</div>                                                                          
+										<div class="booking">
+											<a href="match-live.html">
+												Watch live
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-            </div>
+				</div>
 
-            <!-- Controls -->
-            <a class="nav-arrow left-arrow" href="#main-slider" role="button" data-slide="prev">
-                <i class="fa fa-angle-left" aria-hidden="true"></i>
-                <span class="sr-only"></span>
-            </a>
-            <a class="nav-arrow right-arrow" href="#main-slider" role="button" data-slide="next">
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <span class="sr-only"></span>
-            </a>
+				<!-- Controls -->
+				<a class="nav-arrow left-arrow" href="#main-slider" role="button" data-slide="prev">
+					<i class="fa fa-angle-left" aria-hidden="true"></i>
+					<span class="sr-only"></span>
+				</a>
+				<a class="nav-arrow right-arrow" href="#main-slider" role="button" data-slide="next">
+					<i class="fa fa-angle-right" aria-hidden="true"></i>
+					<span class="sr-only"></span>
+				</a>
 
-            <div class="event-nav">
-                <div class="container">
-                    <div class="row no-gutter carousel-indicators">
+				<div class="event-nav">
+					<div class="container">
+						<div class="row no-gutter carousel-indicators">
 
-                        <div class="col-sm-4 active" data-slide-to="0" data-target="#main-slider">
-                            <a href="#" class="nav-item">
-                                <span class="championship">National cup - quarterfinal</span>
-                                <span class="teams-wrap">
-                                    <span class="team"><img src="<?= $baseUrl;?>/images/soccer/team-logo1.png" alt="team-logo"></span>
-                                    <span class="score">
-                                        <span>1:0</span>
-                                    </span>
+							<div class="col-sm-4 active" data-slide-to="0" data-target="#main-slider">
+								<a href="#" class="nav-item">
+									<span class="championship">National cup - quarterfinal</span>
+									<span class="teams-wrap">
+										<span class="team"><img src="<?= $baseUrl;?>/images/soccer/team-logo1.png" alt="team-logo"></span>
+										<span class="score">
+											<span>1:0</span>
+										</span>
 
-                                    <span class="team1">
-                                        <span><img src="<?= $baseUrl;?>/images/soccer/team-logo2.png" alt="team-logo"></span>
-                                    </span>
-                                </span>
-                                <span class="game-result">(5-4) penalties</span>
-                            </a>
-                        </div>
+										<span class="team1">
+											<span><img src="<?= $baseUrl;?>/images/soccer/team-logo2.png" alt="team-logo"></span>
+										</span>
+									</span>
+									<span class="game-result">(5-4) penalties</span>
+								</a>
+							</div>
 
-                        <div class="col-sm-4" data-slide-to="1" data-target="#main-slider">
-                            <a href="#" class="nav-item">
-                                <span class="championship">Team Name 1 - Team Name 2</span>
-                                <span class="teams-wrap">
+							<div class="col-sm-4" data-slide-to="1" data-target="#main-slider">
+								<a href="#" class="nav-item">
+									<span class="championship">Team Name 1 - Team Name 2</span>
+									<span class="teams-wrap">
 
-                                    <span class="team"><img src="<?= $baseUrl;?>/images/soccer/team-logo5.png" alt="team-logo"></span>
-                                    <span class="score countdown" data-date="1534185200000">
-                                        <span class="days"></span>
-                                        <span class="hours"></span>
-                                        <span class="minutes"></span>
-                                        <span class="seconds"></span>
-                                    </span>
+										<span class="team"><img src="<?= $baseUrl;?>/images/soccer/team-logo5.png" alt="team-logo"></span>
+										<span class="score countdown" data-date="1534185200000">
+											<span class="days"></span>
+											<span class="hours"></span>
+											<span class="minutes"></span>
+											<span class="seconds"></span>
+										</span>
 
-                                    <span class="team1">
-                                        <span><img src="<?= $baseUrl;?>/images/soccer/team-logo1.png" alt="team-logo"></span>
-                                    </span>
+										<span class="team1">
+											<span><img src="<?= $baseUrl;?>/images/soccer/team-logo1.png" alt="team-logo"></span>
+										</span>
 
-                                </span>
-                                <span class="game-result">26 Sep 2016 / 9:30 PM / city arena</span>
-                            </a>
-                        </div>
-                        
-                        <div class="col-sm-4" data-slide-to="2" data-target="#main-slider">
-                            <a href="#" class="nav-item">
-                                <span class="championship">National cup - quarterfinal</span>
-                                <span class="teams-wrap">
-                                    <span class="team"><img src="<?= $baseUrl;?>/images/soccer/team-logo3.png" alt="team-logo"></span>
-                                    <span class="score">
-                                        <span>VS</span>
-                                    </span>
+									</span>
+									<span class="game-result">26 Sep 2016 / 9:30 PM / city arena</span>
+								</a>
+							</div>
+							
+							<div class="col-sm-4" data-slide-to="2" data-target="#main-slider">
+								<a href="#" class="nav-item">
+									<span class="championship">National cup - quarterfinal</span>
+									<span class="teams-wrap">
+										<span class="team"><img src="<?= $baseUrl;?>/images/soccer/team-logo3.png" alt="team-logo"></span>
+										<span class="score">
+											<span>VS</span>
+										</span>
 
-                                    <span class="team1">
-                                        <span><img src="<?= $baseUrl;?>/images/soccer/team-logo4.png" alt="team-logo"></span>
-                                    </span>
-                                </span>
-                                <span class="game-result">(5-4) penalties</span>
-                            </a>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+										<span class="team1">
+											<span><img src="<?= $baseUrl;?>/images/soccer/team-logo4.png" alt="team-logo"></span>
+										</span>
+									</span>
+									<span class="game-result">(5-4) penalties</span>
+								</a>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
     <div class="main-news-list">
     <div class="owl-carousel owl-theme match-page-slider">
@@ -636,72 +675,13 @@ $baseUrl = $urlManager->baseUrl;
 <section class="success-story sport">
     <div class="container">
         <div class="row">
-            <div class="col-md-7">
-                <h4>success story <br>began here</h4>
-                <p>Pabst irony tattooed, synth sriracha selvage pok pok. Wayfarers kinfolk sartorial, helvetica you probably haven't heard of them tumeric venmo deep mixtape semiotics brunch. </p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="icon"><img src="<?= $baseUrl;?>/images/common/success-icon.png" alt="succes-icon"></div>
-                        <div class="title">Legendary</div>
-                        <p>Next level paleo taxidermy, bespoke messenger bag leggings occupy food truck. </p>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="icon"><img src="<?= $baseUrl;?>/images/common/success-icon1.png" alt="succes-icon"></div>
-                        <div class="title">Legendary</div>
-                        <p>Wayfarers kinfolk sartorial, helvetica you probably haven't heard of them tumeric venmo deep v mixtape semiotics brunch. </p>
-                    </div>
-                    <div class="col-md-12"><a href="trophies.html" class="booking">trophies</a></div>
-                </div>
-            </div>
-            <div class="col-md-5 position-relative">
-                <blockquote class="coach-quote">
-                    <p>Austin mustache man bun vice helvetica.</p>
-                    <p class="name">Brandon Campbell / head coach</p>
-                </blockquote>
-                <img class="img-responsive" src="<?= $baseUrl;?>/images/soccer/coach.png" alt="coach-image">
+            <div class="col-md-12">
+                <?= $home_page_success_story_description?>
             </div>
         </div>
     </div>	
 </section>
 <!--SUCCESS STORY END-->
-
-    <!--SUCCESS STORY BEGIN-->
-<section class="success-story-cybersport">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-7">
-                <h4>success story <br>began here</h4>
-                <p>Pabst irony tattooed, synth sriracha selvage pok pok. Wayfarers kinfolk sartorial, helvetica you probably haven't heard of them tumeric venmo deep mixtape semiotics brunch. </p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="icon"><img src="<?= $baseUrl;?>/images/common/success-icon.png" alt="succes-icon"></div>
-                        <div class="title">Legendary</div>
-                        <p>Next level paleo taxidermy, bespoke messenger bag leggings occupy food truck. </p>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="icon"><img src="<?= $baseUrl;?>/images/common/success-icon1.png" alt="succes-icon"></div>
-                        <div class="title">Legendary</div>
-                        <p>Wayfarers kinfolk sartorial, helvetica you probably haven't heard of them tumeric venmo deep v mixtape semiotics brunch. </p>
-                    </div>
-                    <div class="col-md-12"><a href="trophies.html" class="booking">trophies</a></div>
-                </div>
-            </div>
-
-            <div class="col-md-5">
-                <div class="wrap position-relative">
-                    <div class="cybersport-slogan">
-                        <div class="title">Welcome to</div>
-                        <div class="big-title">Pubstomps</div>
-                        <p>Hella pop-up flexitarian, semiotics migas humblebrag schlitz literally tofu deep v thundercats skateboard viral cornhole.</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-<!--SUCCESS STORY END-->
-
     <!--AWARD BOX BEGIN-->
 
     <div class="main-award-box">
@@ -1140,11 +1120,11 @@ $baseUrl = $urlManager->baseUrl;
 <div class="call-to-action">
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-sm-9 col-xs-6">
-                <div class="text">Become part of a great team</div>
+            <div class="col-md-9 col-sm-9 col-xs-6">
+                <div class="text"><?= $home_page_join_us_title?></div>
             </div>
-            <div class="col-md-2 col-sm-3 col-xs-6 text-right">
-                <a href="contacts.html" class="join">Join us</a>
+            <div class="col-md-3 col-sm-3 col-xs-6 text-right">
+                <a href="<?= $home_page_join_us_button_link?>" class="join"><?= $home_page_join_us_button_text?></a>
             </div>
         </div>
     </div>
@@ -1158,36 +1138,23 @@ $baseUrl = $urlManager->baseUrl;
 <div class="main-sponsor-slider-background">
 <div id="main-sponsor-slider" class="carousel slide main-sponsor-slider" data-ride="carousel">
     <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-4 text-center">
-                        <img class="sponsor-icons" src="<?= $baseUrl;?>/images/common/sponsor-img.png" alt="sponsor-image">	
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <img class="sponsor-icons" src="<?= $baseUrl;?>/images/common/sponsor-img1.png" alt="sponsor-image">	
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <img  class="sponsor-icons dota-csgo-image" src="<?= $baseUrl;?>/images/common/sponsor-img2.png" alt="sponsor-image">	
-                    </div>
-                </div>
-            </div>	
-        </div>
-        <div class="item">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-4 text-center">
-                        <img class="sponsor-icons" src="<?= $baseUrl;?>/images/common/sponsor-img.png" alt="sponsor-image">	
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <img  class="sponsor-icons" src="<?= $baseUrl;?>/images/common/sponsor-img1.png" alt="sponsor-image">	
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <img class="sponsor-icons dota-csgo-image" src="<?= $baseUrl;?>/images/common/sponsor-img2.png" alt="sponsor-image">
-                    </div>
-                </div>
-            </div>	
-        </div>
+		<?php for($outer_i = 0; $outer_i <= count($home_page_sponsors_slider_logos_arr); $outer_i = $outer_i+3){?>
+			<?php if($outer_i % 3 == 0){?>
+				<div class="item <?= ($outer_i == 0?'active':'')?>">
+					<div class="container">
+						<div class="row">
+			<?php }?>
+			<?php for($i = $outer_i; $i < $outer_i+3; $i++){?>
+				<div class="col-xs-4 text-center">
+					<img class="sponsor-icons" src="<?= (isset($home_page_sponsors_slider_logos_arr[$i])?$home_page_sponsors_slider_logos_arr[$i]:'/images/common/sponsor-img.png')?>" alt="sponsor-image">	
+				</div>
+			<?php }?>		
+			<?php if($outer_i % 3 == 0){?>
+						</div>
+					</div>	
+				</div>
+			<?php }?>
+		<?php }?>
         <!-- Controls -->
         <a class="nav-arrow left-arrow" href="#main-sponsor-slider" role="button" data-slide="prev">
                 <i class="fa fa-angle-left" aria-hidden="true"></i>
