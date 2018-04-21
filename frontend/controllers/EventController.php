@@ -1,17 +1,40 @@
 <?php
 namespace frontend\controllers;
+
+use Yii;
 use yii\web\Controller;
+use common\models\NewsEvent;
+use common\models\search\NewsEventSearch;
 
 class EventController extends Controller
 {
 	public function actionIndex()
 	{
-		return $this->render('index');		
+		$searchModel = new NewsEventSearch();
+		$searchModel->type = NewsEvent::TYPE_EVENT;
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		return $this->render('index', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);	
 	}
 	
-	public function actionView()
+	public function actionView($id)
 	{
-		return $this->render('view');	
+		$model = $this->findModel($id);
+		$recentEvents = NewsEvent::find()->where(['type' => NewsEvent::TYPE_EVENT])->limit(3)->orderBy('created_at desc')->all();
+		return $this->render('view', [
+			'model' => $model,
+			'recentEvents' => $recentEvents,
+		]);	
+	}
+	
+	public function findModel($id){
+		if($model = NewsEvent::findOne($id)){
+			return $model;
+		}
+		throw new NotFoundHttpException('Requested event does not exist.');
 	}
 }
 ?>

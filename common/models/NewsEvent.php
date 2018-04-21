@@ -56,13 +56,14 @@ class NewsEvent extends \yii\db\ActiveRecord
         return [
             [['title', 'content'], 'required'],
             [['content', 'place'], 'string'],
-            [['photo', 'news_event_date', 'type', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['photo', 'type', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['photo'], 'exist', 'skipOnError' => true, 'targetClass' => Media::className(), 'targetAttribute' => ['photo' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
 			[['type'], 'in', 'range' => [self::TYPE_EVENT, self::TYPE_NEWS]],
             [['photoFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,png'],
+			[['news_event_date'], 'safe'],
         ];
     }
 	
@@ -136,9 +137,25 @@ class NewsEvent extends \yii\db\ActiveRecord
 					}
 				}
 			}
+			
+			if($this->news_event_date){
+				$this->news_event_date = strtotime($this->news_event_date);
+			}
+			
             return true;
         } else {
             return false;
         }
+    }
+	
+    /**
+     * @inheritdoc
+     */
+    public function afterFind()
+    {
+		if($this->news_event_date){
+			$this->news_event_date = Yii::$app->formatter->asDate($this->news_event_date);
+		}
+        return parent::afterFind();
     }
 }

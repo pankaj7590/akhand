@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\datetime\DateTimePicker;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\NewsEvent */
@@ -24,7 +25,14 @@ use yii\widgets\ActiveForm;
 					<?= $form->field($model, 'photoFile', ['template' => '{label}<div class="controls">{input}</div>{error}'])->fileInput() ?>
 					<?= $form->field($model, 'title', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['maxlength' => true]) ?>
 					<?= $form->field($model, 'content', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textarea(['rows' => 6]) ?>
-					<?= $form->field($model, 'news_event_date', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput() ?>
+					<?= $form->field($model, 'news_event_date', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput()->widget(DateTimePicker::classname(), [
+						'options' => ['placeholder' => 'Enter date ...'],
+						'pluginOptions' => [
+							'autoclose' => true,
+							'minView' => 4,
+							'format' => Yii::$app->params['jsDateFormat'],
+						]
+					]); ?>
 					<?= $form->field($model, 'place', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['maxlength' => true]) ?>
 					<div class="form-group">
 						<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

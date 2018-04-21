@@ -91,7 +91,7 @@ $baseUrl = $urlManager->baseUrl;
                         <ul class="contact-list">
                             <li><i class="fa fa-flag" aria-hidden="true"></i><span><?= $footer_contact_address;?></span></li>
                             <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:<?= $footer_contact_email;?>"><?= $footer_contact_email;?></a></li>
-                            <li class="phone"><i class="fa fa-phone" aria-hidden="true"></i><a href="mailto:<?= $footer_contact_phone;?>"><span><?= $footer_contact_phone;?></span></a></li>
+                            <li class="phone"><i class="fa fa-phone" aria-hidden="true"></i><a href="tel:<?= $footer_contact_phone;?>"><span><?= $footer_contact_phone;?></span></a></li>
                         </ul>
                         <ul class="socials">
                             <li><a href="<?= $facebook;?>"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
