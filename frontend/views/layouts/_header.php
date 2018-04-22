@@ -104,6 +104,7 @@ $baseUrl = $urlManager->baseUrl;
 				$menuItems[] = ['label' => '<span>Register</span>', 'url' => ['/site/signup'], 'encode' => false];
 				$menuItems[] = ['label' => '<span>Login</span>', 'url' => ['/site/login'], 'encode' => false];
 			} else {
+				$menuItems[] = ['label' => '<span>Profile</span>', 'url' => ['/site/profile'], 'encode' => false];
 				$menuItems[] = '<li>'
 					. Html::beginForm(['/site/logout'], 'post')
 					. Html::submitButton(

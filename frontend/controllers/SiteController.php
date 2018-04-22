@@ -34,7 +34,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'profile'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -42,7 +42,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'profile'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -277,4 +277,32 @@ class SiteController extends Controller
 			'searchModel' => $searchModel,
 		]);
 	}
+	
+	public function actionProfile(){
+		$memberModel = $this->findGuardian(Yii::$app->user->id);
+		$memberModel->detachBehavior('blameable');
+					
+		if($memberModel->load(Yii::$app->request->post()) && $memberModel->save()){
+			return $this->redirect(['profile']);
+		}
+		return $this->render('profile',[
+            'model' => $memberModel,
+        ]);
+	}
+
+    /**
+     * Finds the Member model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Admission the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findGuardian($id)
+    {
+        if (($model = Member::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested member record does not exist.');
+    }
 }
