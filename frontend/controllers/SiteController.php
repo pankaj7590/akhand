@@ -279,7 +279,7 @@ class SiteController extends Controller
 	}
 	
 	public function actionProfile(){
-		$memberModel = $this->findGuardian(Yii::$app->user->id);
+		$memberModel = $this->findMember(Yii::$app->user->id);
 		$memberModel->detachBehavior('blameable');
 					
 		if($memberModel->load(Yii::$app->request->post()) && $memberModel->save()){
@@ -297,7 +297,7 @@ class SiteController extends Controller
      * @return Admission the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findGuardian($id)
+    protected function findMember($id)
     {
         if (($model = Member::findOne($id)) !== null) {
             return $model;
