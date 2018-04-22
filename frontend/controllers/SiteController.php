@@ -19,6 +19,7 @@ use common\models\BadmintonMatch;
 use common\models\BallBadmintonMatch;
 use common\models\Member;
 use common\models\NewsEvent;
+use common\models\search\GallerySearch;
 
 /**
  * Site controller
@@ -267,4 +268,13 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+	
+	public function actionGallery(){
+		$searchModel = new GallerySearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		return $this->render('gallery', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
 }

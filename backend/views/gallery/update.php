@@ -13,3 +13,7 @@ $this->params['breadcrumbs'][] = 'Update';
 <?= $this->render('_form', [
 	'model' => $model,
 ]) ?>
+<?= $this->render('_gallerymedia', [
+	'searchModel' => $searchModel,
+	'dataProvider' => $dataProvider,
+]);?>

@@ -41,3 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+<?= $this->render('_gallerymedia', [
+	'searchModel' => $searchModel,
+	'dataProvider' => $dataProvider,
+]);?>

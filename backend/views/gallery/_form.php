@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 				<fieldset>
 					<?= $form->field($model, 'name', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput(['maxlength' => true]) ?>
 					<?= $form->field($model, 'description', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textarea(['rows' => 6]) ?>
-					<?= $form->field($model, 'type', ['template' => '{label}<div class="controls">{input}</div>{error}'])->textInput() ?>
+					<?= $form->field($model, 'galleryPictures[]', ['template' => '{label}<div class="controls">{input}</div>{error}'])->fileInput(['multiple' => true]) ?>
 					<div class="form-group">
 						<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
 					</div>

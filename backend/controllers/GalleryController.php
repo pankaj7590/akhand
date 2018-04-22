@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Gallery;
 use common\models\search\GallerySearch;
+use common\models\search\GalleryMediaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -62,8 +63,16 @@ class GalleryController extends Controller
      */
     public function actionView($id)
     {
+		$model = $this->findModel($id);
+		
+        $searchModel = new GalleryMediaSearch();
+		$searchModel->gallery_id = $model->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -95,6 +104,10 @@ class GalleryController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		
+        $searchModel = new GalleryMediaSearch();
+		$searchModel->gallery_id = $model->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
@@ -102,6 +115,8 @@ class GalleryController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

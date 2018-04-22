@@ -5,6 +5,8 @@ namespace common\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\web\UploadedFile;
+use common\components\MediaUploader;
 
 /**
  * This is the model class for table "gallery".
@@ -25,6 +27,16 @@ use yii\behaviors\TimestampBehavior;
  */
 class Gallery extends \yii\db\ActiveRecord
 {
+	public $galleryPictures;
+	
+	const STATUS_SHOW = 1;
+	const STATUS_HIDE = 0;
+	
+	public static $statuses = [
+		self::STATUS_SHOW => 'Show',
+		self::STATUS_HIDE => 'Hide',
+	];
+	
     /**
      * @inheritdoc
      */
@@ -40,11 +52,37 @@ class Gallery extends \yii\db\ActiveRecord
     {
         return [
             [['description'], 'string'],
+            [['galleryPictures'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,png', 'maxFiles'=>0],
             [['type', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
         ];
+    }
+	
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if (parent::beforeSave($insert, $changedAttributes)) {
+			$images = UploadedFile::getInstances($this, 'galleryPictures');
+			foreach($images as $image){
+				if($image){
+					if($image != null && !$image->getHasError()) {
+						if($mediaDetails = MediaUploader::uploadFiles($image)){
+							$galleryMedia = new GalleryMedia();
+							$galleryMedia->gallery_id = $this->id;
+							$galleryMedia->media_id = $mediaDetails['media_id'];
+							$galleryMedia->save();
+						}
+					}
+				}
+			}
+            return true;
+        } else {
+            return false;
+        }
     }
 	
 	public function behaviors()
@@ -98,4 +136,8 @@ class Gallery extends \yii\db\ActiveRecord
     {
         return $this->hasMany(GalleryMedia::className(), ['gallery_id' => 'id']);
     }
+	
+	public function getFirstImage(){
+		return $this->hasOne(GalleryMedia::className(), ['gallery_id' => 'id']);
+	}
 }

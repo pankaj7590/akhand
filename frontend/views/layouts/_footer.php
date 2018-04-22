@@ -116,7 +116,7 @@ $recentNews = NewsEvent::find()->where(['type' => NewsEvent::TYPE_NEWS])->orderB
                         <li><a href="<?= $urlManager->createAbsoluteUrl(['match/index']);?>"><span>Matches</span></a></li>
                         <li><a href="<?= $urlManager->createAbsoluteUrl(['team/index']);?>"><span>Team</span></a></li>
                         <li><a href="<?= $urlManager->createAbsoluteUrl(['news/index']);?>"><span>News</span></a></li>
-                        <li><a href="<?= $urlManager->createAbsoluteUrl(['event/index']);?>"><span>News</span></a></li>
+                        <li><a href="<?= $urlManager->createAbsoluteUrl(['event/index']);?>"><span>Events</span></a></li>
                         <li><a href="<?= $urlManager->createAbsoluteUrl(['site/contact']);?>"><span>Contact</span></a></li>
 						<?php if(Yii::$app->user->isGuest){?>
 							<li><a href="<?= $urlManager->createAbsoluteUrl(['site/login']);?>"><span>Login</span></a></li>

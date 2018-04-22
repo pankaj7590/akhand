@@ -31,6 +31,7 @@ $baseUrl = $urlManager->baseUrl;
 		<link href="https://fonts.googleapis.com/css?family=Montserrat%7COpen+Sans:700,400%7CRaleway:400,800,900" rel="stylesheet" />
 		<link rel="icon" href="favicon.ico" type="image/x-icon">
 		<link href="<?= $baseUrl;?>/css/library/bootstrap.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
 	</head>
 	<body>
 		<?php $this->beginBody() ?>
@@ -57,6 +58,7 @@ $baseUrl = $urlManager->baseUrl;
 			<?= $content;?>
 			<?= $this->render("_footer")?>
 		<?php $this->endBody() ?>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
 	</body>
 </html>
 <?php $this->endPage() ?>
