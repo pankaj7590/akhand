@@ -30,12 +30,14 @@ class Setting extends \yii\db\ActiveRecord
 	const GROUP_FOOTER = 2;
 	const GROUP_HOME = 3;
 	const GROUP_CONTACT = 4;
+	const GROUP_FEES = 5;
 	
 	public static $groups = [
 		self::GROUP_HEADER => 'Header',
 		self::GROUP_FOOTER => 'Footer',
 		self::GROUP_HOME => 'Home Page',
 		self::GROUP_CONTACT => 'Contact Page',
+		self::GROUP_FEES => 'Fees Page',
 	];
 	
     /**

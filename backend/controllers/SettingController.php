@@ -156,6 +156,13 @@ class SettingController extends Controller
 		foreach($contactPageOptionModels as $model){
 			$contactPageOptions[$model->name] = $model;
 		}
+		
+		//fees page options
+		$feesPageOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_FEES])->all();
+		$feesPageOptions = [];
+		foreach($feesPageOptionModels as $model){
+			$feesPageOptions[$model->name] = $model;
+		}
 		if(Yii::$app->request->post()){
 			$sent_options = Yii::$app->request->post();
 			
@@ -429,6 +436,16 @@ class SettingController extends Controller
 				$contact_map_address_model->save();
 			}
 			
+			$fees_page_content = $sent_options['fees_page_content'];
+			$fees_page_content_model = Setting::findOne(['name' => 'fees_page_content']);
+			if($fees_page_content_model){
+				$fees_page_content_model->value = $fees_page_content;
+					if(!$fees_page_content_model->default_value){
+						$fees_page_content_model->default_value = $fees_page_content_model->value;
+					}
+				$fees_page_content_model->save();
+			}
+			
 			return $this->redirect(['theme-options']);
 		}
 
@@ -439,6 +456,7 @@ class SettingController extends Controller
             'footerOptions' => $footerOptions,
             'homePageOptions' => $homePageOptions,
             'contactPageOptions' => $contactPageOptions,
+            'feesPageOptions' => $feesPageOptions,
         ]);
     }
 

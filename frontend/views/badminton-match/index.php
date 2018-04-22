@@ -4,7 +4,7 @@ use common\components\MediaHelper;
 
 /* @var $this yii\web\View */
 
-$this->title = 'Matches';
+$this->title = 'Badminton Matches';
 
 $this->params['breadcrumbs'][] = $this->title;
 

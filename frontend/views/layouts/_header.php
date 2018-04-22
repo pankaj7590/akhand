@@ -91,13 +91,15 @@ $baseUrl = $urlManager->baseUrl;
 				],
 				['label' => '<span>Matches</span>', 'url' => ['/match/index'], 'encode' => false, 
 					'items' => [
-						['label' => '<span>Tournaments</span>', 'url' => ['/tournament/index'], 'encode' => false],
-						['label' => '<span>All</span>', 'url' => ['/match/index'], 'encode' => false],
+						['label' => '<span>Cricket Matches</span>', 'url' => ['/match/index'], 'encode' => false, ],
+						['label' => '<span>Badminton Matches</span>', 'url' => ['/badminton-match/index'], 'encode' => false, ],
+						['label' => '<span>Ball Badminton Matches</span>', 'url' => ['/ball-badminton-match/index'], 'encode' => false, ],
 					]],
 				['label' => '<span>Teams</span>', 'url' => ['/team/index'], 'encode' => false],
 				['label' => '<span>News</span>', 'url' => ['/news/index'], 'encode' => false],
 				['label' => '<span>Events</span>', 'url' => ['/event/index'], 'encode' => false],
 				['label' => '<span>Gallery</span>', 'url' => ['/site/gallery'], 'encode' => false],
+				['label' => '<span>Fees</span>', 'url' => ['/site/fees'], 'encode' => false],
 				['label' => '<span>Contact</span>', 'url' => ['/site/contact'], 'encode' => false],
 			];
 			if (Yii::$app->user->isGuest) {

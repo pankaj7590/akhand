@@ -305,4 +305,8 @@ class SiteController extends Controller
 
         throw new NotFoundHttpException('The requested member record does not exist.');
     }
+	
+	public function actionFees(){
+		return $this->render('fees');
+	}
 }

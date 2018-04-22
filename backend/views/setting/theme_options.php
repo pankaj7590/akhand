@@ -27,6 +27,7 @@ $urlManager = Yii::$app->urlManager;
 				  <button class="tablinks" onclick="openTab(event, 'FooterOption')">Footer</button>
 				  <button class="tablinks" onclick="openTab(event, 'HomePageOption')">Home Page</button>
 				  <button class="tablinks" onclick="openTab(event, 'ContactPageOption')">Contact Page</button>
+				  <button class="tablinks" onclick="openTab(event, 'FeesPageOption')">Fees Page</button>
 				</div>
 				<form id="theme-options-form" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>">
@@ -207,6 +208,17 @@ $urlManager = Yii::$app->urlManager;
 							echo '<div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">';
 								echo '<label class="control-label" for="themeoption-contact_map_address">Contact Page Map Address/Coordinates</label>';
 								echo '<input type="text" id="themeoption-contact_map_address" class="form-control" name="contact_map_address" value="'.$contact_map_address.'"/>';
+							echo '</div>';
+						?>
+					</div>
+					<div id="FeesPageOption" class="tabcontent">
+						<?php 
+							$fees_page_content = $feesPageOptions['fees_page_content']['value'];
+							// echo "<pre>";print_r($footer_quick_links);exit;
+									
+							echo '<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">';
+								echo '<label class="control-label" for="themeoption-fees_page_content">Fees Page Content</label>';
+								echo '<textarea id="themeoption-fees_page_content" class="form-control" name="fees_page_content">'.$fees_page_content.'</textarea>';
 							echo '</div>';
 						?>
 					</div>
