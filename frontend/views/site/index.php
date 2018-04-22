@@ -6,6 +6,9 @@ use common\components\MediaHelper;
 /* @var $this yii\web\View */
 
 $this->title = Yii::$app->name;
+
+$urlManager = Yii::$app->urlManager;
+$baseUrl = $urlManager->baseUrl;
 ?>
 	<?php
 		$homePageOptionModels = Setting::find()->where(['setting_group' => Setting::GROUP_HOME])->all();
