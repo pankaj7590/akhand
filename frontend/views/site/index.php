@@ -231,17 +231,6 @@ $baseUrl = $urlManager->baseUrl;
     <!--AWARD BOX BEGIN-->
 
     <div class="main-award-box">
-        <!--TIMELINE BEGIN-->
-		<div class="timeline-bar">
-			<div class="bar">
-				<div class="date date-2" >2001</div>
-				<div class="date date-3" >2002</div>
-				<div class="date date-4" >2007</div>
-				<div class="date date-5" >2010</div>
-				<div class="date date-6 active" >2018</div>
-			</div>
-		</div>
-		<!--TIMELINE END-->
 		<div class="main-award-slider">
 			<div id="main-award-slider" class="carousel slide" data-ride="carousel">
 				<div class="carousel-inner" role="listbox">  
