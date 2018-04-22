@@ -38,6 +38,7 @@ class SignupForm extends Model
             ['name', 'trim'],
             ['name', 'required'],
             ['name', 'string', 'min' => 2, 'max' => 255],
+			['name', 'match', 'pattern' => '/^[a-zA-Z\s]+$/', 'message' => 'Name can only contain characters.'],
 
             ['email', 'trim'],
             ['email', 'required'],
@@ -50,7 +51,8 @@ class SignupForm extends Model
 			
             ['phone', 'trim'],
             ['phone', 'required'],
-            ['phone', 'string', 'max' => 15],
+            ['phone', 'string', 'max' => 10],
+            ['phone', 'number'],
             ['phone', 'unique', 'targetClass' => '\common\models\Member', 'message' => 'This phone number has already been taken.'],
 			
             ['captcha', 'required'],

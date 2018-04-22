@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Controller;
 use common\models\NewsEvent;
 use common\models\search\NewsEventSearch;
+use yii\web\NotFoundHttpException;
 
 class NewsController extends Controller
 {
