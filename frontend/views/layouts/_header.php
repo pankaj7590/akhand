@@ -30,7 +30,7 @@ $baseUrl = $urlManager->baseUrl;
 <div class="top-bar">
     <div class="container">
         <div class="row">
-            <div class="col-md-7 hidden-sm hidden-xs">
+            <div class="col-md-12 hidden-sm hidden-xs">
                 <div class="top-contacts">
                     <ul class="socials">
 						<?php
@@ -65,16 +65,6 @@ $baseUrl = $urlManager->baseUrl;
                     </ul>
                 </div>
             </div>
-            <div class="col-md-5">
-                    <div class="top-search">
-                            <form>
-                                    <input type="text" name="text">
-                                    <button><i class="fa fa-search" aria-hidden="true"></i></button>
-                            </form>
-                    </div>
-
-                    <div class="clear"></div>
-            </div>
         </div>
     </div>
 </div>
@@ -107,6 +97,7 @@ $baseUrl = $urlManager->baseUrl;
 				['label' => '<span>Teams</span>', 'url' => ['/team/index'], 'encode' => false],
 				['label' => '<span>News</span>', 'url' => ['/news/index'], 'encode' => false],
 				['label' => '<span>Events</span>', 'url' => ['/event/index'], 'encode' => false],
+				['label' => '<span>Gallery</span>', 'url' => ['/site/gallery'], 'encode' => false],
 				['label' => '<span>Contact</span>', 'url' => ['/site/contact'], 'encode' => false],
 			];
 			if (Yii::$app->user->isGuest) {

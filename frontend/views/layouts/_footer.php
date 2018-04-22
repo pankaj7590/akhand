@@ -11,6 +11,7 @@ use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use common\models\Setting;
 use common\models\Media;
+use common\models\NewsEvent;
 use common\components\MediaHelper;
 
 AppAsset::register($this);
@@ -18,6 +19,7 @@ AppAsset::register($this);
 $urlManager = Yii::$app->urlManager;
 $baseUrl = $urlManager->baseUrl;
 
+$recentNews = NewsEvent::find()->where(['type' => NewsEvent::TYPE_NEWS])->orderBy('created_at desc')->one();
 ?>
 <!--FOOTER BEGIN-->
 <footer class="footer">
@@ -74,16 +76,16 @@ $baseUrl = $urlManager->baseUrl;
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12 col-lg-offset-1">
-                    <div class="foot-news">
-                        <h4>Recent news</h4>
-                        <div class="item">
-                            <a href="news.html" class="image"><img class="img-responsive" src="<?= $baseUrl;?>/images/soccer/foot-news-img.jpg" alt="news-image"></a>
-                            <a href="news.html" class="name">When somersaulting Sanchez shouldered Mexico’s hopes</a>
-                            <a href="news.html" class="date">25 Sep 2016</a>
-                            <span class="separator">in</span>
-                            <a href="news.html" class="category">Highlights</a>
-                        </div>
-                    </div>
+					<?php if($recentNews){?>
+						<div class="foot-news">
+							<h4>Recent news</h4>
+							<div class="item">
+								<a href="<?= $urlManager->createAbsoluteUrl(['news/view', 'id' => $recentNews->id])?>" class="image"><img class="img-responsive" src="<?= MediaHelper::getImageUrl(($recentNews->newsEventPhoto?$recentNews->newsEventPhoto->file_name:''));?>" alt="news-image"></a>
+								<a href="<?= $urlManager->createAbsoluteUrl(['news/view', 'id' => $recentNews->id])?>" class="name"><?= $recentNews->title?></a>
+								<a href="<?= $urlManager->createAbsoluteUrl(['news/view', 'id' => $recentNews->id])?>" class="date"><?= $recentNews->news_event_date?></a>
+							</div>
+						</div>
+					<?php }?>
                 </div>
                 <div class=" col-lg-3 col-md-4 col-sm-12">
                     <div class="foot-contact">

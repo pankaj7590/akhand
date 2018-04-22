@@ -14,6 +14,11 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\Contact;
 use common\models\Organization;
+use common\models\Match;
+use common\models\BadmintonMatch;
+use common\models\BallBadmintonMatch;
+use common\models\Member;
+use common\models\NewsEvent;
 
 /**
  * Site controller
@@ -75,7 +80,20 @@ class SiteController extends Controller
     public function actionIndex()
     {
 		$this->layout = 'home';
-        return $this->render('index');
+		$recentCricketMatches = Match::find()->limit(2)->orderBy('created_at desc')->all();
+		$recentBadmintonMatches = BadmintonMatch::find()->limit(2)->orderBy('created_at desc')->all();
+		$recentBallbadmintonMatches = BallBadmintonMatch::find()->limit(2)->orderBy('created_at desc')->all();
+		
+		$players = Member::find()->limit(8)->all();
+		
+		$recentNews = NewsEvent::find()->where(['type' => NewsEvent::TYPE_NEWS])->orderBy('created_at desc')->limit(5)->all();
+        return $this->render('index', [
+			'recentCricketMatches' => $recentCricketMatches,
+			'recentBadmintonMatches' => $recentBadmintonMatches,
+			'recentBallbadmintonMatches' => $recentBallbadmintonMatches,
+			'players' => $players,
+			'recentNews' => $recentNews,
+		]);
     }
 	
     public function actionMatches()
