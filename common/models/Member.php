@@ -22,6 +22,8 @@ use common\components\MediaUploader;
  * @property string $password_reset_token
  * @property string $email
  * @property string $phone
+ * @property int $coach_required
+ * @property string $interested_sports
  * @property int $status
  * @property int $created_by
  * @property int $updated_by
@@ -67,7 +69,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['profile_picture', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['profile_picture', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at', 'coach_required'], 'integer'],
             [['name', 'username', 'auth_key', 'password_hash', 'email', 'phone'], 'required'],
             [['name', 'surname', 'username', 'password_hash', 'password_reset_token', 'email', 'password'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
@@ -79,6 +81,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['profilePictureFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,png'],
+			[['interested_sports'], 'safe'],
         ];
     }
 
@@ -410,9 +413,19 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
 					}
 				}
 			}
+			if($this->interested_sports){
+				$this->interested_sports = json_encode($this->interested_sports);
+			}
             return true;
         } else {
             return false;
         }
     }
+	
+	public function afterFind(){
+		if($this->interested_sports){
+			$this->interested_sports = json_decode($this->interested_sports);
+		}
+		return parent::afterFind();
+	}
 }

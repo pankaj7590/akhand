@@ -22,6 +22,8 @@ class SignupForm extends Model
     public $password;
     public $organization;
     public $captcha;
+    public $coach_required;
+    public $interested_sports;
 
 
     /**
@@ -66,6 +68,8 @@ class SignupForm extends Model
                 'message' => 'Organization does not exist.',
 				'targetAttribute' => ['organization' => 'id']
             ],
+			
+			[['coach_required', 'interested_sports'], 'safe'],
         ];
     }
 
@@ -87,6 +91,8 @@ class SignupForm extends Model
 			$member->name = $this->name;
 			$member->phone = $this->phone;
 			$member->email = $this->email;
+			$member->coach_required = $this->coach_required;
+			$member->interested_sports = $this->interested_sports;
 			$member->setPassword($this->password);
 			$member->generateAuthKey();
 			if($member->save()){

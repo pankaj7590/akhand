@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use common\components\SportTypes;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,6 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
 							<div class="col-md-12">
 								<div class="item">
 									<?= $form->field($model, 'organization')->dropdownList($organizations, ['prompt' => 'Select organization to request']); ?>
+								</div>	
+							</div>
+							<div class="col-md-12">
+								<div class="item">
+									<?= $form->field($model, 'interested_sports')->dropdownList(SportTypes::$types, ['class' => '', 'multiple' => true, 'style' => 'height:95px;']) ?>
 								</div>	
 							</div>
 							<div class="col-md-12">
@@ -49,6 +55,11 @@ $this->params['breadcrumbs'][] = $this->title;
 							<div class="col-md-12">
 								<div class="item">
 									<?= $form->field($model, 'password')->passwordInput(['class' => '']) ?>
+								</div>	
+							</div>
+							<div class="col-md-12">
+								<div class="item">
+									<?= $form->field($model, 'coach_required')->checkbox(['class' => '']) ?>
 								</div>	
 							</div>
 							<div class="col-md-12">

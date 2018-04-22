@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\components\SportTypes;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\MemberSearch */
@@ -39,12 +40,32 @@ $urlManager = Yii::$app->urlManager;
 									$fileName = ($data->profilePicture?$data->profilePicture->file_name:"");
 									return \common\components\MediaHelper::getImageUrl($fileName);
 								},
-								'format' => ['image', ['height' => '100']],
+								'format' => ['image', ['width' => '100px']],
 							],
 							'name',
 							'username',
 							'email:email',
 							'phone',
+							[
+								'attribute' => 'interested_sports',
+								'filter' => SportTypes::$types,
+								'value' => function($data){
+									$interested_sports = '';
+									if($data->interested_sports){
+										foreach($data->interested_sports as $sport){
+											$interested_sports .= SportTypes::$types[$sport].', ';
+										}
+									}
+									return trim($interested_sports, ', ');
+								}
+							],
+							[
+								'attribute' => 'coach_required',
+								'filter' => [1 => 'Yes', 0 => 'No'],
+								'value' => function($data){
+									return ($data->coach_required?'Yes':'No');
+								},
+							],
 						],
 					]); ?>
 				</div>
