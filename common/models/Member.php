@@ -55,6 +55,12 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
 	
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+	
+	public static $statuses = [
+		self::STATUS_DELETED => 'Deleted',
+		self::STATUS_ACTIVE => 'Active',
+	];
+	
     /**
      * @inheritdoc
      */

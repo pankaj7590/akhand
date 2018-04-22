@@ -3,7 +3,10 @@
 namespace backend\controllers;
 
 use Yii;
+use common\models\search\TeamMemberSearch;
 use common\models\Team;
+use common\models\OrganizationMember;
+use common\models\OrganizationTeam;
 use common\models\search\TeamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -95,6 +98,29 @@ class TeamController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		
+        $searchModel = new TeamMemberSearch();
+		$searchModel->team_id = $model->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		$alreadyMembers = [];
+		foreach($model->teamMembers as $tm){
+			$alreadyMembers[] = $tm->member_id;
+		}
+		
+		$members = [];
+		$organizationTeam = OrganizationTeam::findOne(['team_id' => $model->id]);
+		if($organizationTeam){
+			$organizationMembers = OrganizationMember::find()->where(['not in', 'member_id', $alreadyMembers])->all();
+			foreach($organizationMembers as $orgmem){
+				$members[$orgmem->member_id] = $orgmem->member->name;
+			}
+		}else{
+			$memberModels = Member::find()->where(['not in', 'member_id', $alreadyMembers])->all();
+			foreach($memberModels as $mem){
+				$members[$mem->id] = $mem->name;
+			}
+		}
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
@@ -102,6 +128,9 @@ class TeamController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'members' => $members,
         ]);
     }
 

@@ -241,21 +241,18 @@ $baseUrl = $urlManager->baseUrl;
 										<div class="award">
 											<div class="image"><img class="img-responsive" src="<?= $baseUrl;?>/images/common/cup.png" alt="cup-image"></div>
 											<div class="name">All-Star Series</div>
-											<div class="year">2016</div>
 										</div>
 									</div>
 									<div class="col-xs-4 text-center">
 										<div class="award">
 											<div class="image"><img class="img-responsive" src="<?= $baseUrl;?>/images/common/cup1.png" alt="cup-image"></div>
 											<div class="name">World Class Championship</div>
-											<div class="year">2016</div>
 										</div>
 									</div>
 									<div class="col-xs-4 text-center">
 										<div class="award">
 											<div class="image"><img class="img-responsive" src="<?= $baseUrl;?>/images/common/cup2.png" alt="cup-image"></div>
 											<div class="name">Major League Trophy</div>
-											<div class="year">2016</div>
 										</div>
 									</div>
 								</div>
@@ -268,21 +265,18 @@ $baseUrl = $urlManager->baseUrl;
 										<div class="award">
 											<div class="image"><img class="img-responsive" src="<?= $baseUrl;?>/images/common/cup.png" alt="cup-image"></div>
 											<div class="name">All-Star Series</div>
-											<div class="year">2016</div>
 										</div>
 									</div>
 									<div class="col-xs-4 text-center">
 										<div class="award">
 											<div class="image"><img class="img-responsive" src="<?= $baseUrl;?>/images/common/cup1.png" alt="cup-image"></div>
 											<div class="name">World Class Championship</div>
-											<div class="year">2016</div>
 										</div>
 									</div>
 									<div class="col-xs-4 text-center">
 										<div class="award">
 											<div class="image"><img class="img-responsive" src="<?= $baseUrl;?>/images/common/cup2.png" alt="cup-image"></div>
 											<div class="name">Major League Trophy</div>
-											<div class="year">2016</div>
 										</div>
 									</div>
 								</div>

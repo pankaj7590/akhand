@@ -12,4 +12,9 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <?= $this->render('_form', [
         'model' => $model,
+		'members' => $members,
     ]) ?>
+<?= $this->render('_teammembers', [
+	'searchModel' => $searchModel,
+	'dataProvider' => $dataProvider,
+]);?>

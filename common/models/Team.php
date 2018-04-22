@@ -45,7 +45,7 @@ use common\components\MediaUploader;
  */
 class Team extends \yii\db\ActiveRecord
 {
-	public $logoFile;
+	public $logoFile, $team_members;
 	
     /**
      * @inheritdoc
@@ -68,6 +68,7 @@ class Team extends \yii\db\ActiveRecord
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['logoFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,png'],
+			[['team_members'], 'safe'],
         ];
     }
 	
@@ -287,4 +288,18 @@ class Team extends \yii\db\ActiveRecord
             return false;
         }
     }
+	
+	public function afterSave($insert, $changedAttributes){
+		if($this->team_members){
+			foreach($this->team_members as $member){
+				$teamMember = new TeamMember();
+				$teamMember->team_id = $this->id;
+				$teamMember->member_id = $member;
+				if(!$teamMember->save()){
+					echo "<pre>";print_r($teamMember->getErrors());exit;
+				}
+			}
+		}
+		return parent::afterSave($insert, $changedAttributes);
+	}
 }
